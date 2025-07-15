@@ -35,7 +35,7 @@
       color: #3cb371;
     }
 
-    .nav-left .active {
+    .nav-left .trade-calculator {
       color: #3cb371;
       font-weight: bold;
     }
@@ -170,12 +170,13 @@
       overflow-y: auto;
       box-shadow: 0 0 15px rgba(60,179,113,0.4);
       display: flex;
+      position: relative;
     }
 
     .close-inventory {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 10px;
+      right: 10px;
       color: #fff;
       font-size: 24px;
       cursor: pointer;
@@ -240,7 +241,7 @@
   <nav class="navbar">
     <div class="nav-left">
       <a href="#">Trading</a>
-      <a href="#" class="active">Trade Calculator</a>
+      <a href="#" class="trade-calculator">Trade Calculator</a>
       <a href="#">Create Trade</a>
       <a href="https://docs.google.com/spreadsheets/d/1eQ39xV6l0uAogtIci9SJMm0Se-PktIEKtq6mhzVnStY/edit?gid=296028972#gid=296028972" target="_blank">Value List</a>
       <a href="https://discord.gg/tTYRm9GVRV" target="_blank">Discord</a>
@@ -293,9 +294,7 @@
       <div class="inventory-left">
         <div class="category active">All Items</div>
       </div>
-      <div class="inventory-right" id="inventoryGrid">
-        <!-- Items will be dynamically loaded -->
-      </div>
+      <div class="inventory-right" id="inventoryGrid"></div>
     </div>
   </div>
 
