@@ -5,127 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Calculator</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-
-    /* ✅ NAVIGATION BAR */
-    .navbar {
-      background-color: #000;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      margin-right: 15px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: background-color 0.3s;
-    }
-    .navbar a:hover {
-      background-color: #1a3d2e; /* Dark green hover */
-    }
-    .navbar a.active {
-      background-color: #3e8e61; /* Main green */
-      color: white;
-    }
-    .sign-in {
-      background-color: #3e8e61; /* ✅ Green sign-in */
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .sign-in:hover {
-      background-color: #2f6e4a;
-    }
-
-    /* ✅ HEADERS */
-    .page-header {
-      text-align: center;
-      margin: 20px 0;
-    }
-    .page-header h1 {
-      font-size: 28px;
-      margin-bottom: 5px;
-    }
-
-    /* ✅ TRADING BOXES */
-    .trade-box {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 30px;
-      padding: 20px;
-    }
-    .trade-column {
-      background-color: #111;
-      border-radius: 12px;
-      padding: 15px;
-      width: 250px;
-      text-align: center;
-    }
-    .your-items {
-      background-color: #3e8e61; /* ✅ Green header */
-      color: white;
-      padding: 8px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    .wanted-items {
-      background-color: #2f6e4a; /* ✅ Slightly darker green */
-      color: white;
-      padding: 8px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    .item-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .item {
-      background-color: #1a1a1a;
-      border: 1px solid #3e8e61;
-      border-radius: 6px;
-      padding: 15px 0;
-      cursor: pointer;
-      color: #4caf50;
-    }
-    .summary {
-      color: #ccc;
-      font-size: 12px;
-    }
-
-    /* ✅ SWAP BUTTON */
-    .swap-button {
-      background-color: #3e8e61;
-      color: white;
-      font-size: 22px;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .swap-button:hover {
-      background-color: #2f6e4a;
-    }
-  </style>
 </head>
 <body>
 
@@ -154,13 +33,8 @@
     <!-- Your Items -->
     <div class="trade-column">
       <div class="your-items">Your Items</div>
-      <div class="item-grid">
-        <div class="item">+ Add Item</div>
-        <div class="item">+ Add Item</div>
-        <div class="item">+ Add Item</div>
-        <div class="item">+ Add Item</div>
-      </div>
-      <div class="summary">Price: $0 | Value: $0</div>
+      <div class="item-grid" id="your-items"></div>
+      <div class="summary">Price: <span id="your-price">$0</span> | Value: <span id="your-value">$0</span></div>
     </div>
 
     <!-- Swap Button -->
@@ -169,15 +43,24 @@
     <!-- Wanted Items -->
     <div class="trade-column">
       <div class="wanted-items">Wanted Items</div>
-      <div class="item-grid">
-        <div class="item">+ Add Item</div>
-        <div class="item">+ Add Item</div>
-        <div class="item">+ Add Item</div>
-        <div class="item">+ Add Item</div>
-      </div>
-      <div class="summary">Price: $0 | Value: $0</div>
+      <div class="item-grid" id="wanted-items"></div>
+      <div class="summary">Price: <span id="wanted-price">$0</span> | Value: <span id="wanted-value">$0</span></div>
     </div>
   </div>
 
+  <!-- ✅ INVENTORY MODAL -->
+  <div class="inventory-modal" id="inventoryModal">
+    <div class="inventory-content">
+      <span class="close-inventory" onclick="closeInventory()">&times;</span>
+      <div class="inventory-left">
+        <div class="category active">All Items</div>
+      </div>
+      <div class="inventory-right" id="inventoryGrid">
+        <!-- Items will be dynamically loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
