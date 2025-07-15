@@ -11,11 +11,15 @@
   <!-- ✅ NAVIGATION BAR -->
   <nav class="navbar">
     <div class="nav-left">
-      <a href="#">Trading</a>
-      <a href="#" class="active">Trade Calculator</a>
-      <a href="#">Create Trade</a>
-      <a href="#">Value List</a>
-      <a href="#">Discord</a>
+      <a href="index.html">Trading</a>
+      <a href="trade-calculator.html" class="active">Trade Calculator</a>
+      <a href="create-trade.html">Create Trade</a>
+      <a href="https://docs.google.com/spreadsheets/d/1eQ39xV6l0uAogtIci9SJMm0Se-PktIEKtq6mhzVnStY/edit?gid=296028972#gid=296028972" target="_blank">
+        Value List
+      </a>
+      <a href="https://discord.gg/tTYRm9GVRV" target="_blank">
+        Discord
+      </a>
     </div>
     <div class="nav-right">
       <button class="sign-in">Sign In</button>
@@ -25,7 +29,7 @@
   <!-- ✅ PAGE HEADER -->
   <div class="page-header">
     <h1>Trading Calculator</h1>
-    <p>Add up to 4 items on each side of the trade. Click on any item to remove it.</p>
+    <p>Add up to 4 items on either side of the trade. Click on an item to remove it.</p>
   </div>
 
   <!-- ✅ TRADING CALCULATOR -->
@@ -34,33 +38,29 @@
       <!-- Your Items -->
       <div class="trade-column">
         <div class="title your-items">Your Items</div>
-        <div class="item-grid">
-          <div class="item add-item">+ Add Item</div>
-          <div class="item add-item">+ Add Item</div>
-          <div class="item add-item">+ Add Item</div>
-          <div class="item add-item">+ Add Item</div>
+        <div id="your-items" class="item-grid">
+          <!-- Items will be rendered dynamically by script.js -->
         </div>
-        <div class="summary">Price: $0 | Value: $0</div>
+        <div class="summary">
+          Price: <span id="your-price">$0</span> | Value: <span id="your-value">$0</span>
+        </div>
       </div>
 
       <!-- Swap Button -->
-      <div class="swap-button">⇄</div>
+      <div class="swap-button" onclick="swapItems()">⇄</div>
 
       <!-- Wanted Items -->
       <div class="trade-column">
         <div class="title wanted-items">Wanted Items</div>
-        <div class="item-grid">
-          <div class="item add-item">+ Add Item</div>
-          <div class="item add-item">+ Add Item</div>
-          <div class="item add-item">+ Add Item</div>
-          <div class="item add-item">+ Add Item</div>
+        <div id="wanted-items" class="item-grid">
+          <!-- Items will be rendered dynamically by script.js -->
         </div>
-        <div class="summary">Price: $0 | Value: $0</div>
+        <div class="summary">
+          Price: <span id="wanted-price">$0</span> | Value: <span id="wanted-value">$0</span>
+        </div>
       </div>
     </div>
   </div>
-
-  <script src="script.js"></script>
 
   <!-- ✅ ITEM MODAL -->
   <div id="itemModal" class="modal">
@@ -71,6 +71,9 @@
       <div id="itemGrid" class="modal-grid"></div>
     </div>
   </div>
+
+  <!-- ✅ SCRIPT (should be at the bottom so it loads after the DOM) -->
+  <script src="script.js"></script>
 
 </body>
 </html>
