@@ -1,0 +1,84 @@
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+}
+
+h2 {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.trade-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.trade-column {
+  background: #111;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.title {
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.your-items {
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+}
+
+.wanted-items {
+  background: linear-gradient(90deg, #5a189a, #10002b);
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 120px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.item {
+  background: #1a1a1a;
+  border-radius: 6px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #aaa;
+  border: 1px solid #333;
+}
+
+.item:hover {
+  background: #333;
+}
+
+.add-item {
+  font-size: 14px;
+}
+
+.summary {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.swap-button {
+  font-size: 2rem;
+  cursor: pointer;
+}
