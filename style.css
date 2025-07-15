@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 30px auto;
 }
 
@@ -18,23 +18,30 @@ h2 {
   opacity: 0.8;
 }
 
+/* --- Trade Box Layout --- */
 .trade-box {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
 }
 
 .trade-column {
   background: #111;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 12px;
+  width: 280px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+/* --- Titles --- */
 .title {
-  padding: 8px;
-  border-radius: 6px;
-  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
 .your-items {
@@ -45,48 +52,74 @@ h2 {
   background: linear-gradient(90deg, #5a189a, #10002b);
 }
 
+/* --- Item Grid --- */
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(2, 120px);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   justify-content: center;
   margin-bottom: 10px;
 }
 
 .item {
-  background: #1a1a1a;
-  border-radius: 6px;
-  height: 80px;
+  background: #1c1c2b;
+  border-radius: 8px;
+  height: 110px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: #aaa;
-  border: 1px solid #333;
+  color: #ccc;
+  border: 1px solid #2e2e3e;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.9rem;
 }
 
 .item:hover {
-  background: #333;
+  background: #292943;
+  transform: scale(1.05);
 }
 
 .add-item {
   font-size: 14px;
+  color: #7a7aff;
+  font-weight: bold;
 }
 
+/* --- Summary --- */
 .summary {
   font-size: 14px;
-  opacity: 0.8;
+  opacity: 0.9;
+  margin-top: 5px;
 }
 
+/* --- Swap Button --- */
 .swap-button {
-  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  background: #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
   cursor: pointer;
+  border: 2px solid #444;
+  transition: all 0.2s ease-in-out;
 }
 
-/* ✅ MODAL FIXED */
+.swap-button:hover {
+  background: #333;
+  transform: rotate(180deg);
+}
+
+/* --- Modal (Item Selector) --- */
 .modal {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.7);
   display: none;
   justify-content: center;
@@ -98,41 +131,56 @@ h2 {
   background: #111;
   padding: 20px;
   border-radius: 8px;
-  width: 400px;
+  width: 420px;
   max-height: 80%;
   overflow-y: auto;
-}
-
-.modal-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.modal-grid div {
-  background: #222;
-  padding: 10px;
   text-align: center;
-  cursor: pointer;
-  border-radius: 5px;
 }
 
-.modal-grid div:hover {
-  background: #333;
-}
-
-.modal-grid img {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto 5px;
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 .close {
-  cursor: pointer;
-  float: right;
-  font-size: 1.2rem;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.8rem;
   color: #fff;
+  cursor: pointer;
+}
+
+#searchBox {
+  width: 90%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+#itemGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+#itemGrid .item {
+  background: #222;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+}
+
+#itemGrid .item:hover {
+  background: #333;
+}
+
+#itemGrid img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 5px;
 }
