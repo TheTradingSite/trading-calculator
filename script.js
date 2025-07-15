@@ -1,9 +1,10 @@
+// === GLOBALS ===
 const maxItems = 4;
 let yourItems = [];
 let wantedItems = [];
 let currentType = "";
 
-// ✅ Render Items (Grid-Based)
+// === RENDER ITEMS (Grid-Based) ===
 function renderItems() {
   const yourItemsContainer = document.getElementById("your-items");
   const wantedItemsContainer = document.getElementById("wanted-items");
@@ -11,7 +12,7 @@ function renderItems() {
   yourItemsContainer.innerHTML = "";
   wantedItemsContainer.innerHTML = "";
 
-  // Render Your Items
+  // === Render Your Items ===
   for (let i = 0; i < maxItems; i++) {
     const itemDiv = document.createElement("div");
     itemDiv.className = "item";
@@ -22,6 +23,7 @@ function renderItems() {
         <p>${yourItems[i].name}</p>
         <small>$${yourItems[i].price}</small>
       `;
+      itemDiv.style.background = "#4b6cb7"; // ✅ Blue for "Your Items"
       itemDiv.onclick = () => removeItem("your", i);
     } else {
       itemDiv.classList.add("add-item");
@@ -31,7 +33,7 @@ function renderItems() {
     yourItemsContainer.appendChild(itemDiv);
   }
 
-  // Render Wanted Items
+  // === Render Wanted Items ===
   for (let i = 0; i < maxItems; i++) {
     const itemDiv = document.createElement("div");
     itemDiv.className = "item";
@@ -42,6 +44,7 @@ function renderItems() {
         <p>${wantedItems[i].name}</p>
         <small>$${wantedItems[i].price}</small>
       `;
+      itemDiv.style.background = "#6a11cb"; // ✅ Purple for "Wanted Items"
       itemDiv.onclick = () => removeItem("wanted", i);
     } else {
       itemDiv.classList.add("add-item");
@@ -54,7 +57,7 @@ function renderItems() {
   updateSummary();
 }
 
-// ✅ Add & Remove Items
+// === ADD & REMOVE ITEMS ===
 function addItem(type) {
   currentType = type;
   openInventorySelector();
@@ -69,7 +72,7 @@ function removeItem(type, index) {
   renderItems();
 }
 
-// ✅ Update Price Summary
+// === UPDATE PRICE SUMMARY ===
 function updateSummary() {
   const yourPrice = yourItems.reduce((sum, i) => sum + i.price, 0);
   const wantedPrice = wantedItems.reduce((sum, i) => sum + i.price, 0);
@@ -81,45 +84,66 @@ function updateSummary() {
   document.getElementById("wanted-value").textContent = `$${wantedPrice}`;
 }
 
-// ✅ Swap Button
+// === SWAP BUTTON ===
 function swapItems() {
   [yourItems, wantedItems] = [wantedItems, yourItems];
   renderItems();
 }
 
-/* ------------------------------------------------
-    ✅ NEW INVENTORY SELECTOR (Brainrots Version)
--------------------------------------------------- */
+/* =====================================================
+    ✅ INVENTORY SELECTOR (Brainrots + Real Items)
+====================================================== */
 
-// Example inventory items (ALL called Brainrots for now)
-const inventoryItems = Array.from({ length: 20 }, (_, i) => ({
-  name: "Brainrots",
-  img: "brainrots.png", // put your own image here
-  price: 100
-}));
+// ✅ Dummy Inventory (Brainrots + Real Items)
+const inventoryItems = [
+  // 25 Brainrots
+  ...Array.from({ length: 25 }, (_, i) => ({
+    name: "Brainrots",
+    img: "brainrots.png",
+    price: 100
+  })),
+
+  // Real Items
+  { name: "Sword of Truth", img: "sword.png", price: 500 },
+  { name: "Golden Shield", img: "shield.png", price: 450 },
+  { name: "Magic Wand", img: "wand.png", price: 350 },
+  { name: "Dragon Egg", img: "egg.png", price: 800 }
+];
 
 const modal = document.getElementById("itemModal");
 const categoryPanel = document.getElementById("categoryPanel");
 const itemGrid = document.getElementById("itemGrid");
 const searchBox = document.getElementById("searchBox");
 
+// === OPEN INVENTORY MODAL ===
 function openInventorySelector() {
   modal.style.display = "flex";
   displayCategories();
   displayItems(inventoryItems);
 }
 
+// === DISPLAY CATEGORIES ===
 function displayCategories() {
   categoryPanel.innerHTML = "";
 
-  const button = document.createElement("button");
-  button.className = "category-button";
-  button.textContent = "Brainrots";
-  button.onclick = () => displayItems(inventoryItems);
+  // Brainrots Category
+  const brainrotBtn = document.createElement("button");
+  brainrotBtn.className = "category-button";
+  brainrotBtn.textContent = "Brainrots";
+  brainrotBtn.onclick = () =>
+    displayItems(inventoryItems.filter(i => i.name === "Brainrots"));
+  categoryPanel.appendChild(brainrotBtn);
 
-  categoryPanel.appendChild(button);
+  // Real Items Category
+  const realItemsBtn = document.createElement("button");
+  realItemsBtn.className = "category-button";
+  realItemsBtn.textContent = "Special Items";
+  realItemsBtn.onclick = () =>
+    displayItems(inventoryItems.filter(i => i.name !== "Brainrots"));
+  categoryPanel.appendChild(realItemsBtn);
 }
 
+// === DISPLAY ITEMS IN MODAL ===
 function displayItems(itemList) {
   itemGrid.innerHTML = "";
   itemList.forEach(item => {
@@ -135,6 +159,7 @@ function displayItems(itemList) {
   });
 }
 
+// === SELECT ITEM FROM MODAL ===
 function selectItem(item) {
   if (currentType === "your" && yourItems.length < maxItems) {
     yourItems.push(item);
@@ -145,15 +170,18 @@ function selectItem(item) {
   renderItems();
 }
 
+// === SEARCH FUNCTION ===
 searchBox.addEventListener("input", () => {
+  const query = searchBox.value.toLowerCase();
   const filtered = inventoryItems.filter(i =>
-    i.name.toLowerCase().includes(searchBox.value.toLowerCase())
+    i.name.toLowerCase().includes(query)
   );
   displayItems(filtered);
 });
 
+// === CLOSE MODAL ===
 document.getElementById("closeModal").onclick = () =>
   (modal.style.display = "none");
 
-// ✅ Initial render
+// ✅ INITIAL RENDER
 renderItems();
