@@ -3,20 +3,9 @@ body {
   background-color: #000;
   color: #fff;
   font-family: Arial, sans-serif;
-  text-align: center;
   margin: 0;
   padding: 0;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 30px auto;
-}
-
-h2 {
-  font-size: 1rem;
-  margin-bottom: 20px;
-  opacity: 0.8;
+  text-align: center;
 }
 
 /* === Navigation Bar === */
@@ -27,7 +16,6 @@ h2 {
   background: #000;
   padding: 15px 30px;
   color: white;
-  font-family: Arial, sans-serif;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -46,33 +34,25 @@ h2 {
 }
 
 .nav-left .active {
-  background: #7b2cbf; /* Purple highlight */
+  background: #7b2cbf;
   padding: 6px 12px;
   border-radius: 6px;
 }
 
-.nav-right .sign-in {
+.sign-in {
   background: #7b2cbf;
   color: white;
   border: none;
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
 }
 
-.nav-right .sign-in:hover {
+.sign-in:hover {
   background: #5a189a;
 }
 
 /* === Page Header === */
-.page-header {
-  text-align: center;
-  color: white;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-
 .page-header h1 {
   font-size: 32px;
   font-weight: bold;
@@ -83,12 +63,13 @@ h2 {
   color: #ccc;
 }
 
-/* --- Trade Box Layout --- */
+/* === Trade Calculator === */
 .trade-box {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 30px;
+  margin-top: 20px;
 }
 
 .trade-column {
@@ -96,34 +77,28 @@ h2 {
   padding: 15px;
   border-radius: 12px;
   width: 280px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Titles --- */
-.title {
+.your-items {
+  background: #4b6cb7;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 12px;
   font-weight: bold;
-  text-align: center;
-  font-size: 1.1rem;
-}
-
-.your-items {
-  background: linear-gradient(90deg, #4b6cb7, #182848);
 }
 
 .wanted-items {
-  background: linear-gradient(90deg, #5a189a, #10002b);
+  background: #6a11cb;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-weight: bold;
 }
 
-/* --- Item Grid --- */
 .item-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  justify-content: center;
-  margin-bottom: 10px;
 }
 
 .item {
@@ -137,7 +112,6 @@ h2 {
   color: #ccc;
   border: 1px solid #2e2e3e;
   transition: all 0.2s ease-in-out;
-  font-size: 0.9rem;
 }
 
 .item:hover {
@@ -145,20 +119,13 @@ h2 {
   transform: scale(1.05);
 }
 
-.add-item {
-  font-size: 14px;
-  color: #7a7aff;
-  font-weight: bold;
-}
-
-/* --- Summary --- */
 .summary {
   font-size: 14px;
-  opacity: 0.9;
   margin-top: 5px;
+  opacity: 0.9;
 }
 
-/* --- Swap Button --- */
+/* === Swap Button === */
 .swap-button {
   width: 50px;
   height: 50px;
@@ -170,145 +137,11 @@ h2 {
   font-size: 1.6rem;
   cursor: pointer;
   border: 2px solid #444;
-  transition: all 0.2s ease-in-out;
 }
 
 .swap-button:hover {
   background: #333;
   transform: rotate(180deg);
-}
-
-/* --- Modal (Item Selector) --- */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal-content {
-  background: #111;
-  padding: 20px;
-  border-radius: 8px;
-  width: 420px;
-  max-height: 80%;
-  overflow-y: auto;
-  text-align: center;
-  position: relative;
-}
-
-.modal-content h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 1.8rem;
-  color: #fff;
-  cursor: pointer;
-}
-
-#searchBox {
-  width: 90%;
-  padding: 8px;
-  margin-bottom: 12px;
-  border: none;
-  border-radius: 6px;
-  outline: none;
-}
-
-#itemGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-#itemGrid .item {
-  background: #222;
-  padding: 8px;
-  text-align: center;
-  border-radius: 6px;
-}
-
-#itemGrid .item:hover {
-  background: #333;
-}
-
-#itemGrid img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto 5px;
-}
-/* === Navigation Bar === */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #000;
-  padding: 15px 30px;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-.nav-left a {
-  color: white;
-  text-decoration: none;
-  margin-right: 20px;
-  font-size: 15px;
-  transition: color 0.3s;
-}
-
-.nav-left a:hover {
-  color: #aaa;
-}
-
-.nav-left .active {
-  background: #7b2cbf;
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-.nav-right .sign-in {
-  background: #7b2cbf;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.nav-right .sign-in:hover {
-  background: #5a189a;
-}
-
-/* === Page Header === */
-.page-header {
-  text-align: center;
-  color: white;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-
-.page-header h1 {
-  font-size: 32px;
-  font-weight: bold;
-}
-
-.page-header p {
-  font-size: 16px;
-  color: #ccc;
 }
 
 /* === Inventory Modal === */
@@ -360,7 +193,6 @@ h2 {
   border-radius: 6px;
   margin-bottom: 8px;
   cursor: pointer;
-  font-weight: bold;
 }
 
 .inventory-left .category.active {
@@ -383,22 +215,8 @@ h2 {
   padding: 10px;
   text-align: center;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .inventory-item:hover {
   background: #ddd;
 }
-
-.inventory-item img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  margin-bottom: 5px;
-}
-
-.inventory-item span {
-  font-size: 14px;
-  font-weight: bold;
-}
-
