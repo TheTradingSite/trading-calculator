@@ -25,7 +25,6 @@ function renderItems() {
   yourItemsContainer.innerHTML = "";
   wantedItemsContainer.innerHTML = "";
 
-  // Helper to render a single slot (your or wanted)
   const renderSlot = (container, items, type, index) => {
     const div = document.createElement("div");
     div.className = "item";
@@ -93,11 +92,15 @@ function closeInventory() {
   document.getElementById("inventoryModal").style.display = "none";
 }
 
+// ✅ === FIXED SELECT ITEM (Toggle version) ===
 function selectItem(item) {
-  if (currentType === "your" && yourItems.length < maxItems) {
-    yourItems.push(item);
-  } else if (currentType === "wanted" && wantedItems.length < maxItems) {
-    wantedItems.push(item);
+  let arr = currentType === "your" ? yourItems : wantedItems;
+  const index = arr.findIndex(i => i.name === item.name);
+
+  if (index !== -1) {
+    arr.splice(index, 1); // ✅ Remove if already selected
+  } else if (arr.length < maxItems) {
+    arr.push(item); // ✅ Add if space available
   }
 
   renderItems();
