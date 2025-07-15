@@ -4,46 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Calculator</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- External CSS -->
 </head>
 <body>
- <div class="container">
-  <h2>Add up to 4 items on each side of the trade. Click on any item to remove it.</h2>
-  
-  <div class="trade-box">
-    <!-- Your Items -->
-    <div class="trade-column">
-      <div class="title your-items">Your Items</div>
-      <div class="item-grid">
-        <div class="item add-item">+ Add Item</div>
-        <div class="item add-item">+ Add Item</div>
-        <div class="item add-item">+ Add Item</div>
-        <div class="item add-item">+ Add Item</div>
-      </div>
-      <div class="summary">Price: $0 | Value: $0</div>
+
+  <!-- ✅ NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="#">Trading</a>
+      <a href="#" class="active">Trade Calculator</a>
+      <a href="#">Create Trade</a>
+      <a href="#">Value List</a>
+      <a href="#">Discord</a>
     </div>
+    <div class="nav-right">
+      <button class="sign-in">Sign In</button>
+    </div>
+  </nav>
 
-    <!-- Swap Button -->
-    <div class="swap-button">⇄</div>
+  <!-- ✅ PAGE HEADER -->
+  <div class="page-header">
+    <h1>Trading Calculator</h1>
+    <p>Add up to 4 items on each side of the trade. Click on any item to remove it.</p>
+  </div>
 
-    <!-- Wanted Items -->
-    <div class="trade-column">
-      <div class="title wanted-items">Wanted Items</div>
-      <div class="item-grid">
-        <div class="item add-item">+ Add Item</div>
-        <div class="item add-item">+ Add Item</div>
-        <div class="item add-item">+ Add Item</div>
-        <div class="item add-item">+ Add Item</div>
+  <!-- ✅ TRADING CALCULATOR -->
+  <div class="container">
+    <div class="trade-box">
+      <!-- Your Items -->
+      <div class="trade-column">
+        <div class="title your-items">Your Items</div>
+        <div class="item-grid">
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+        </div>
+        <div class="summary">Price: $0 | Value: $0</div>
       </div>
-      <div class="summary">Price: $0 | Value: $0</div>
+
+      <!-- Swap Button -->
+      <div class="swap-button">⇄</div>
+
+      <!-- Wanted Items -->
+      <div class="trade-column">
+        <div class="title wanted-items">Wanted Items</div>
+        <div class="item-grid">
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+        </div>
+        <div class="summary">Price: $0 | Value: $0</div>
+      </div>
     </div>
   </div>
-</div>
-
 
   <script src="script.js"></script>
 
-  <!-- ✅ Item Modal -->
+  <!-- ✅ ITEM MODAL -->
   <div id="itemModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
@@ -52,5 +71,6 @@
       <div id="itemGrid" class="modal-grid"></div>
     </div>
   </div>
+
 </body>
 </html>
