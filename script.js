@@ -25,40 +25,30 @@ function renderItems() {
   yourItemsContainer.innerHTML = "";
   wantedItemsContainer.innerHTML = "";
 
-  for (let i = 0; i < maxItems; i++) {
-    const yourDiv = document.createElement("div");
-    yourDiv.className = "item";
+  // Helper to render a single slot (your or wanted)
+  const renderSlot = (container, items, type, index) => {
+    const div = document.createElement("div");
+    div.className = "item";
 
-    if (yourItems[i]) {
-      yourDiv.innerHTML = `
-        <img src="images/${yourItems[i].img}" style="width:50px;height:50px;">
-        <p>${yourItems[i].name}</p>
-        <small>$${yourItems[i].price}</small>
+    if (items[index]) {
+      const item = items[index];
+      div.innerHTML = `
+        <img src="images/${item.img}" style="width:50px;height:50px;">
+        <p>${item.name}</p>
+        <small>$${item.price}</small>
       `;
-      yourDiv.onclick = () => removeItem("your", i);
+      div.onclick = () => removeItem(type, index);
     } else {
-      yourDiv.textContent = "+ Add Item";
-      yourDiv.onclick = () => addItem("your");
+      div.textContent = "+ Add Item";
+      div.onclick = () => addItem(type);
     }
-    yourItemsContainer.appendChild(yourDiv);
-  }
+
+    container.appendChild(div);
+  };
 
   for (let i = 0; i < maxItems; i++) {
-    const wantedDiv = document.createElement("div");
-    wantedDiv.className = "item";
-
-    if (wantedItems[i]) {
-      wantedDiv.innerHTML = `
-        <img src="images/${wantedItems[i].img}" style="width:50px;height:50px;">
-        <p>${wantedItems[i].name}</p>
-        <small>$${wantedItems[i].price}</small>
-      `;
-      wantedDiv.onclick = () => removeItem("wanted", i);
-    } else {
-      wantedDiv.textContent = "+ Add Item";
-      wantedDiv.onclick = () => addItem("wanted");
-    }
-    wantedItemsContainer.appendChild(wantedDiv);
+    renderSlot(yourItemsContainer, yourItems, "your", i);
+    renderSlot(wantedItemsContainer, wantedItems, "wanted", i);
   }
 
   updateSummary();
@@ -83,13 +73,19 @@ function removeItem(type, index) {
 function openInventorySelector() {
   const grid = document.getElementById("inventoryGrid");
   grid.innerHTML = "";
+
   inventoryData.forEach(item => {
     const div = document.createElement("div");
     div.className = "inventory-item";
-    div.innerHTML = `${item.name}<br>$${item.price} | $${item.value}`;
+    div.innerHTML = `
+      <img src="images/${item.img}" style="width:40px;height:40px;display:block;margin:0 auto 5px;">
+      ${item.name}<br>
+      <small>$${item.price} | $${item.value}</small>
+    `;
     div.onclick = () => selectItem(item);
     grid.appendChild(div);
   });
+
   document.getElementById("inventoryModal").style.display = "block";
 }
 
@@ -98,25 +94,30 @@ function closeInventory() {
 }
 
 function selectItem(item) {
-  if (currentType === "your") {
-    if (yourItems.length < maxItems) yourItems.push(item);
-  } else {
-    if (wantedItems.length < maxItems) wantedItems.push(item);
+  if (currentType === "your" && yourItems.length < maxItems) {
+    yourItems.push(item);
+  } else if (currentType === "wanted" && wantedItems.length < maxItems) {
+    wantedItems.push(item);
   }
+
   renderItems();
   closeInventory();
 }
 
 // === PRICE SUMMARY ===
 function updateSummary() {
-  const yourPrice = yourItems.reduce((sum, i) => sum + i.price, 0);
-  const wantedPrice = wantedItems.reduce((sum, i) => sum + i.price, 0);
-  document.getElementById("your-price").textContent = `$${yourPrice}`;
-  document.getElementById("wanted-price").textContent = `$${wantedPrice}`;
+  const sum = arr => arr.reduce((total, item) => total + item.price, 0);
+  document.getElementById("your-price").textContent = `$${sum(yourItems)}`;
+  document.getElementById("wanted-price").textContent = `$${sum(wantedItems)}`;
 }
 
-// === SWAP TRADES ===
+// === SWAP BUTTON FUNCTIONALITY ===
 function swapTrades() {
+  const button = document.querySelector(".swap-button");
+  button.classList.add("spin");
+
   [yourItems, wantedItems] = [wantedItems, yourItems];
   renderItems();
+
+  setTimeout(() => button.classList.remove("spin"), 500);
 }
