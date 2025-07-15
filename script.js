@@ -4,7 +4,16 @@ let yourItems = [];
 let wantedItems = [];
 let currentType = "";
 
-// === INITIAL RENDER ===
+// ✅ Example Inventory Data
+const inventoryData = [
+  { name: "Golden Crown", price: 500, value: 700, img: "golden-crown.png" },
+  { name: "Emerald Sword", price: 300, value: 400, img: "emerald-sword.png" },
+  { name: "Ruby Staff", price: 200, value: 250, img: "ruby-staff.png" },
+  { name: "Mystic Armor", price: 450, value: 600, img: "mystic-armor.png" },
+  { name: "Dragon Egg", price: 800, value: 1000, img: "dragon-egg.png" },
+  { name: "Silver Ring", price: 100, value: 150, img: "silver-ring.png" }
+];
+
 document.addEventListener("DOMContentLoaded", () => {
   renderItems();
 });
@@ -13,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderItems() {
   const yourItemsContainer = document.getElementById("your-items");
   const wantedItemsContainer = document.getElementById("wanted-items");
-
   yourItemsContainer.innerHTML = "";
   wantedItemsContainer.innerHTML = "";
 
@@ -23,7 +31,7 @@ function renderItems() {
 
     if (yourItems[i]) {
       yourDiv.innerHTML = `
-        <img src="images/${yourItems[i].img}" alt="${yourItems[i].name}" style="width:50px;height:50px;">
+        <img src="images/${yourItems[i].img}" style="width:50px;height:50px;">
         <p>${yourItems[i].name}</p>
         <small>$${yourItems[i].price}</small>
       `;
@@ -41,7 +49,7 @@ function renderItems() {
 
     if (wantedItems[i]) {
       wantedDiv.innerHTML = `
-        <img src="images/${wantedItems[i].img}" alt="${wantedItems[i].name}" style="width:50px;height:50px;">
+        <img src="images/${wantedItems[i].img}" style="width:50px;height:50px;">
         <p>${wantedItems[i].name}</p>
         <small>$${wantedItems[i].price}</small>
       `;
@@ -71,22 +79,44 @@ function removeItem(type, index) {
   renderItems();
 }
 
-// === UPDATE PRICE SUMMARY ===
-function updateSummary() {
-  const yourPrice = yourItems.reduce((sum, i) => sum + i.price, 0);
-  const wantedPrice = wantedItems.reduce((sum, i) => sum + i.price, 0);
-
-  document.getElementById("your-price").textContent = `$${yourPrice}`;
-  document.getElementById("your-value").textContent = `$${yourPrice}`;
-  document.getElementById("wanted-price").textContent = `$${wantedPrice}`;
-  document.getElementById("wanted-value").textContent = `$${wantedPrice}`;
-}
-
 // === INVENTORY MODAL ===
 function openInventorySelector() {
-  document.getElementById("inventoryModal").style.display = "flex";
+  const grid = document.getElementById("inventoryGrid");
+  grid.innerHTML = "";
+  inventoryData.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "inventory-item";
+    div.innerHTML = `${item.name}<br>$${item.price} | $${item.value}`;
+    div.onclick = () => selectItem(item);
+    grid.appendChild(div);
+  });
+  document.getElementById("inventoryModal").style.display = "block";
 }
 
 function closeInventory() {
   document.getElementById("inventoryModal").style.display = "none";
+}
+
+function selectItem(item) {
+  if (currentType === "your") {
+    if (yourItems.length < maxItems) yourItems.push(item);
+  } else {
+    if (wantedItems.length < maxItems) wantedItems.push(item);
+  }
+  renderItems();
+  closeInventory();
+}
+
+// === PRICE SUMMARY ===
+function updateSummary() {
+  const yourPrice = yourItems.reduce((sum, i) => sum + i.price, 0);
+  const wantedPrice = wantedItems.reduce((sum, i) => sum + i.price, 0);
+  document.getElementById("your-price").textContent = `$${yourPrice}`;
+  document.getElementById("wanted-price").textContent = `$${wantedPrice}`;
+}
+
+// === SWAP TRADES ===
+function swapTrades() {
+  [yourItems, wantedItems] = [wantedItems, yourItems];
+  renderItems();
 }
