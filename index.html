@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Calculator</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       background-color: #000;
@@ -12,25 +13,25 @@
       text-align: center;
     }
 
-    h1 {
+    .page-header h1 {
       margin-top: 20px;
       font-size: 2em;
       font-weight: bold;
     }
 
-    p {
+    .page-header p {
       color: #ccc;
       margin-bottom: 20px;
     }
 
-    .trade-container {
+    .trade-box {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 20px;
     }
 
-    .trade-box {
+    .trade-column {
       background: #111;
       padding: 15px;
       border-radius: 8px;
@@ -38,8 +39,9 @@
       width: 260px;
     }
 
-    .box-title {
-      background: #3cb371; /* GREEN THEME */
+    .your-items,
+    .wanted-items {
+      background: #3cb371; /* ✅ GREEN THEME */
       padding: 5px;
       border-radius: 4px;
       font-weight: bold;
@@ -47,7 +49,7 @@
       margin-bottom: 10px;
     }
 
-    .items-grid {
+    .item-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
@@ -70,13 +72,13 @@
       background: #333;
     }
 
-    .price-value {
+    .summary {
       margin-top: 8px;
       font-size: 0.9em;
       color: #aaa;
     }
 
-    .swap-icon {
+    .swap-button {
       font-size: 28px;
       background: #222;
       padding: 10px;
@@ -85,43 +87,76 @@
       cursor: pointer;
       margin: 0 10px;
       transition: background 0.2s ease-in-out;
+      color: #fff;
     }
 
-    .swap-icon:hover {
+    .swap-button:hover {
       background: #333;
     }
   </style>
 </head>
 <body>
-  <h1>Trading Calculator</h1>
-  <p>Add up to 4 items on either side of the trade. Click on an item to remove it.</p>
 
-  <div class="trade-container">
-    <!-- YOUR ITEMS -->
-    <div class="trade-box">
-      <div class="box-title">Your Items</div>
-      <div class="items-grid" id="yourItems">
+  <!-- ✅ NAVIGATION BAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="#">Trading</a>
+      <a href="#" class="active">Trade Calculator</a>
+      <a href="#">Create Trade</a>
+      <a href="https://docs.google.com/spreadsheets/d/1eQ39xV6l0uAogtIci9SJMm0Se-PktIEKtq6mhzVnStY/edit?gid=296028972#gid=296028972" target="_blank">Value List</a>
+      <a href="https://discord.gg/tTYRm9GVRV" target="_blank">Discord</a>
+    </div>
+    <div class="nav-right">
+      <button class="sign-in">Sign In</button>
+    </div>
+  </nav>
+
+  <!-- ✅ PAGE HEADER -->
+  <div class="page-header">
+    <h1>Trading Calculator</h1>
+    <p>Add up to 4 items on either side of the trade. Click on an item to remove it.</p>
+  </div>
+
+  <!-- ✅ TRADE CALCULATOR -->
+  <div class="trade-box">
+    <!-- Your Items -->
+    <div class="trade-column">
+      <div class="your-items">Your Items</div>
+      <div class="item-grid" id="yourItems">
         <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
         <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
         <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
         <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
       </div>
-      <div class="price-value" id="yourPrice">Price: $0 | Value: $0</div>
+      <div class="summary">Price: <span id="yourPrice">$0</span> | Value: <span id="yourValue">$0</span></div>
     </div>
 
-    <!-- SWAP ICON -->
-    <div class="swap-icon">⇄</div>
+    <!-- Swap Button -->
+    <button class="swap-button">⇄</button>
 
-    <!-- WANTED ITEMS -->
-    <div class="trade-box">
-      <div class="box-title">Wanted Items</div>
-      <div class="items-grid" id="wantedItems">
+    <!-- Wanted Items -->
+    <div class="trade-column">
+      <div class="wanted-items">Wanted Items</div>
+      <div class="item-grid" id="wantedItems">
         <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
         <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
         <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
         <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
       </div>
-      <div class="price-value" id="wantedPrice">Price: $0 | Value: $0</div>
+      <div class="summary">Price: <span id="wantedPrice">$0</span> | Value: <span id="wantedValue">$0</span></div>
+    </div>
+  </div>
+
+  <!-- ✅ INVENTORY MODAL (UNTOUCHED) -->
+  <div class="inventory-modal" id="inventoryModal">
+    <div class="inventory-content">
+      <span class="close-inventory" onclick="closeInventory()">&times;</span>
+      <div class="inventory-left">
+        <div class="category active">All Items</div>
+      </div>
+      <div class="inventory-right" id="inventoryGrid">
+        <!-- Items will be dynamically loaded here -->
+      </div>
     </div>
   </div>
 
@@ -135,7 +170,7 @@
         slot.innerText = itemName;
         slot.dataset.price = itemPrice;
         slot.dataset.value = itemValue;
-        slot.style.color = "#3cb371"; // GREEN theme
+        slot.style.color = "#3cb371"; // ✅ GREEN THEME
       } else {
         slot.innerText = '+ Add Item';
         delete slot.dataset.price;
@@ -151,8 +186,12 @@
         totalPrice += parseInt(slot.dataset.price || 0, 10);
         totalValue += parseInt(slot.dataset.value || 0, 10);
       });
-      document.getElementById(`${type}Price`).innerText =
-        `Price: $${totalPrice} | Value: $${totalValue}`;
+      document.getElementById(`${type}Price`).innerText = `$${totalPrice}`;
+      document.getElementById(`${type}Value`).innerText = `$${totalValue}`;
+    }
+
+    function closeInventory() {
+      document.getElementById("inventoryModal").style.display = "none";
     }
   </script>
 </body>
