@@ -1,6 +1,7 @@
 const maxItems = 4;
 let yourItems = [];
 let wantedItems = [];
+let currentType = ""; // <-- Track whether adding to "your" or "wanted"
 
 function renderItems() {
   const yourItemsContainer = document.getElementById("your-items");
@@ -43,16 +44,8 @@ function renderItems() {
 }
 
 function addItem(type) {
-  const name = prompt("Enter item name:");
-  const price = parseFloat(prompt("Enter item price:"));
-  if (!name || isNaN(price)) return alert("Invalid input!");
-
-  if (type === "your" && yourItems.length < maxItems) {
-    yourItems.push({ name, price });
-  } else if (type === "wanted" && wantedItems.length < maxItems) {
-    wantedItems.push({ name, price });
-  }
-  renderItems();
+  currentType = type; // remember if adding to "your" or "wanted"
+  openItemSelector();
 }
 
 function removeItem(type, index) {
@@ -71,9 +64,59 @@ function updateSummary() {
   document.getElementById("your-price").textContent = yourPrice;
   document.getElementById("wanted-price").textContent = wantedPrice;
 
-  // In this version, Value = Price (but you can add custom logic)
   document.getElementById("your-value").textContent = yourPrice;
   document.getElementById("wanted-value").textContent = wantedPrice;
 }
 
+// ✅ Item Selector Modal Logic
+const items = [
+  { name: "2X BOSS DROPS", img: "bossdrops.png", price: 100 },
+  { name: "2X MASTERY", img: "mastery.png", price: 200 },
+  { name: "BLADE", img: "blade.png", price: 300 },
+  { name: "BUDDHA", img: "buddha.png", price: 400 },
+  // Add more...
+];
+
+const modal = document.getElementById("itemModal");
+const itemGrid = document.getElementById("itemGrid");
+const searchBox = document.getElementById("searchBox");
+
+function openItemSelector() {
+  modal.style.display = "flex";
+  displayItems(items);
+}
+
+function displayItems(itemList) {
+  itemGrid.innerHTML = "";
+  itemList.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `<img src="images/${item.img}" alt=""><br>${item.name}`;
+    div.onclick = () => selectItem(item);
+    itemGrid.appendChild(div);
+  });
+}
+
+function selectItem(item) {
+  // ✅ Add selected item to the correct list
+  if (currentType === "your" && yourItems.length < maxItems) {
+    yourItems.push(item);
+  } else if (currentType === "wanted" && wantedItems.length < maxItems) {
+    wantedItems.push(item);
+  }
+  modal.style.display = "none";
+  renderItems();
+}
+
+searchBox.addEventListener("input", () => {
+  const filtered = items.filter(i =>
+    i.name.toLowerCase().includes(searchBox.value.toLowerCase())
+  );
+  displayItems(filtered);
+});
+
+document.getElementById("closeModal").onclick = () =>
+  (modal.style.display = "none");
+
+// Initial render
 renderItems();
