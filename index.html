@@ -11,24 +11,69 @@
       color: #fff;
       font-family: Arial, sans-serif;
       text-align: center;
+      transition: background 0.3s ease-in-out;
+    }
+
+    /* ✅ NAVIGATION BAR */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111;
+      padding: 10px 20px;
+      border-bottom: 2px solid #3cb371;
+    }
+
+    .nav-left a {
+      color: #ccc;
+      text-decoration: none;
+      margin-right: 15px;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .nav-left a:hover {
+      color: #3cb371;
+    }
+
+    .nav-left .active {
+      color: #3cb371;
+      font-weight: bold;
+    }
+
+    .sign-in {
+      background: #3cb371;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .sign-in:hover {
+      background: #2e8b57;
     }
 
     .page-header h1 {
       margin-top: 20px;
       font-size: 2em;
       font-weight: bold;
+      animation: fadeIn 0.8s ease-in-out;
     }
 
     .page-header p {
       color: #ccc;
       margin-bottom: 20px;
+      animation: fadeIn 1.2s ease-in-out;
     }
 
+    /* ✅ TRADE BOX */
     .trade-box {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 20px;
+      animation: fadeIn 1.5s ease-in-out;
     }
 
     .trade-column {
@@ -37,11 +82,17 @@
       border-radius: 8px;
       margin: 0 20px;
       width: 260px;
+      box-shadow: 0 0 10px rgba(60,179,113,0.3);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .trade-column:hover {
+      transform: scale(1.02);
     }
 
     .your-items,
     .wanted-items {
-      background: #3cb371; /* ✅ GREEN THEME */
+      background: #3cb371;
       padding: 5px;
       border-radius: 4px;
       font-weight: bold;
@@ -65,11 +116,12 @@
       justify-content: center;
       color: #bbb;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: background 0.2s ease-in-out, transform 0.1s ease-in-out;
     }
 
     .item-slot:hover {
       background: #333;
+      transform: scale(1.05);
     }
 
     .summary {
@@ -86,12 +138,99 @@
       border: 1px solid #444;
       cursor: pointer;
       margin: 0 10px;
-      transition: background 0.2s ease-in-out;
+      transition: background 0.2s ease-in-out, transform 0.1s ease-in-out;
       color: #fff;
     }
 
     .swap-button:hover {
       background: #333;
+      transform: rotate(180deg);
+    }
+
+    /* ✅ INVENTORY MODAL */
+    .inventory-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .inventory-content {
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+      width: 600px;
+      max-height: 80%;
+      overflow-y: auto;
+      box-shadow: 0 0 15px rgba(60,179,113,0.4);
+      display: flex;
+    }
+
+    .close-inventory {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .inventory-left {
+      width: 120px;
+      border-right: 1px solid #444;
+      padding-right: 10px;
+    }
+
+    .category {
+      padding: 6px;
+      background: #222;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #ccc;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .category.active, .category:hover {
+      background: #3cb371;
+      color: #fff;
+    }
+
+    .inventory-right {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+      padding-left: 10px;
+    }
+
+    .inventory-item {
+      background: #222;
+      border: 1px solid #444;
+      border-radius: 6px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #bbb;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+    }
+
+    .inventory-item:hover {
+      background: #3cb371;
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -123,10 +262,10 @@
     <div class="trade-column">
       <div class="your-items">Your Items</div>
       <div class="item-grid" id="yourItems">
-        <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
-        <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
-        <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
-        <div class="item-slot" onclick="addItem(this, 'your')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'your')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'your')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'your')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'your')">+ Add Item</div>
       </div>
       <div class="summary">Price: <span id="yourPrice">$0</span> | Value: <span id="yourValue">$0</span></div>
     </div>
@@ -138,16 +277,16 @@
     <div class="trade-column">
       <div class="wanted-items">Wanted Items</div>
       <div class="item-grid" id="wantedItems">
-        <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
-        <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
-        <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
-        <div class="item-slot" onclick="addItem(this, 'wanted')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'wanted')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'wanted')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'wanted')">+ Add Item</div>
+        <div class="item-slot" onclick="openInventory(this, 'wanted')">+ Add Item</div>
       </div>
       <div class="summary">Price: <span id="wantedPrice">$0</span> | Value: <span id="wantedValue">$0</span></div>
     </div>
   </div>
 
-  <!-- ✅ INVENTORY MODAL (UNTOUCHED) -->
+  <!-- ✅ INVENTORY MODAL -->
   <div class="inventory-modal" id="inventoryModal">
     <div class="inventory-content">
       <span class="close-inventory" onclick="closeInventory()">&times;</span>
@@ -155,29 +294,50 @@
         <div class="category active">All Items</div>
       </div>
       <div class="inventory-right" id="inventoryGrid">
-        <!-- Items will be dynamically loaded here -->
+        <!-- Items will be dynamically loaded -->
       </div>
     </div>
   </div>
 
   <script>
-    function addItem(slot, type) {
-      if (slot.innerText === '+ Add Item') {
-        let itemName = prompt("Enter item name:");
-        let itemPrice = parseInt(prompt("Enter item price:"), 10) || 0;
-        let itemValue = parseInt(prompt("Enter item value:"), 10) || 0;
+    let currentSlot = null, currentType = '';
 
-        slot.innerText = itemName;
-        slot.dataset.price = itemPrice;
-        slot.dataset.value = itemValue;
-        slot.style.color = "#3cb371"; // ✅ GREEN THEME
-      } else {
-        slot.innerText = '+ Add Item';
-        delete slot.dataset.price;
-        delete slot.dataset.value;
-        slot.style.color = "#bbb";
-      }
-      updateTotals(type);
+    function openInventory(slot, type) {
+      currentSlot = slot;
+      currentType = type;
+      document.getElementById("inventoryModal").style.display = "flex";
+      loadInventory();
+    }
+
+    function closeInventory() {
+      document.getElementById("inventoryModal").style.display = "none";
+    }
+
+    function loadInventory() {
+      const inventoryGrid = document.getElementById("inventoryGrid");
+      inventoryGrid.innerHTML = "";
+      let sampleItems = [
+        {name: "Sword", price: 100, value: 120},
+        {name: "Shield", price: 80, value: 100},
+        {name: "Potion", price: 30, value: 50},
+        {name: "Helmet", price: 60, value: 70}
+      ];
+      sampleItems.forEach(item => {
+        let div = document.createElement("div");
+        div.className = "inventory-item";
+        div.innerText = item.name;
+        div.onclick = () => selectItem(item);
+        inventoryGrid.appendChild(div);
+      });
+    }
+
+    function selectItem(item) {
+      currentSlot.innerText = item.name;
+      currentSlot.dataset.price = item.price;
+      currentSlot.dataset.value = item.value;
+      currentSlot.style.color = "#3cb371";
+      closeInventory();
+      updateTotals(currentType);
     }
 
     function updateTotals(type) {
@@ -188,10 +348,6 @@
       });
       document.getElementById(`${type}Price`).innerText = `$${totalPrice}`;
       document.getElementById(`${type}Value`).innerText = `$${totalValue}`;
-    }
-
-    function closeInventory() {
-      document.getElementById("inventoryModal").style.display = "none";
     }
   </script>
 </body>
