@@ -1,4 +1,4 @@
-/* === Global Styles === */
+/* === GLOBAL === */
 body {
   background-color: #000;
   color: #fff;
@@ -8,215 +8,179 @@ body {
   text-align: center;
 }
 
-/* === Navigation Bar === */
+/* === PAGE HEADER === */
+.page-header {
+  text-align: center;
+  margin-top: 20px;
+}
+.page-header h1 {
+  font-size: 2em;
+  color: #3cb371;
+}
+.page-header p {
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+/* === NAVIGATION BAR === */
 .navbar {
+  background: #111;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #000;
-  padding: 15px 30px;
-  color: white;
+  padding: 10px 20px;
+  border-bottom: 2px solid #3cb371;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
-
 .nav-left a {
-  color: white;
-  text-decoration: none;
-  margin-right: 20px;
-  font-size: 15px;
-  transition: color 0.3s;
-}
-
-.nav-left a:hover {
-  color: #aaa;
-}
-
-.nav-left .active {
-  background: #7b2cbf;
-  padding: 6px 12px;
-  border-radius: 6px;
-}
-
-.sign-in {
-  background: #7b2cbf;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.sign-in:hover {
-  background: #5a189a;
-}
-
-/* === Page Header === */
-.page-header h1 {
-  font-size: 32px;
-  font-weight: bold;
-}
-
-.page-header p {
-  font-size: 16px;
   color: #ccc;
+  text-decoration: none;
+  margin-right: 15px;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+.nav-left a:hover,
+.nav-left a.active {
+  color: #3cb371;
+  border-bottom: 2px solid #3cb371;
+}
+.sign-in {
+  background: #3cb371;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.sign-in:hover {
+  background: #2e9e5f;
 }
 
-/* === Trade Calculator === */
+/* === TRADE BOX === */
 .trade-box {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
   gap: 30px;
-  margin-top: 20px;
 }
-
 .trade-column {
   background: #111;
   padding: 15px;
-  border-radius: 12px;
-  width: 280px;
-}
-
-.your-items {
-  background: #4b6cb7;
-  padding: 10px;
   border-radius: 8px;
-  margin-bottom: 12px;
-  font-weight: bold;
+  width: 260px;
+  box-shadow: 0 0 10px rgba(60, 179, 113, 0.4);
+  transition: transform 0.3s ease;
 }
-
+.trade-column:hover {
+  transform: translateY(-3px);
+}
+.your-items,
 .wanted-items {
-  background: #6a11cb;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  background: #3cb371;
+  padding: 5px;
+  border-radius: 4px;
   font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+  text-align: center;
 }
-
 .item-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
-
 .item {
   background: #1c1c2b;
   border-radius: 8px;
   height: 110px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   color: #ccc;
   border: 1px solid #2e2e3e;
+  cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 .item:hover {
   background: #292943;
   transform: scale(1.05);
 }
-
 .summary {
-  font-size: 14px;
-  margin-top: 5px;
-  opacity: 0.9;
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #aaa;
 }
-
-/* === Swap Button === */
 .swap-button {
-  width: 50px;
-  height: 50px;
-  background: #1a1a1a;
+  font-size: 28px;
+  background: #222;
+  padding: 10px;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.6rem;
+  border: 1px solid #444;
   cursor: pointer;
-  border: 2px solid #444;
+  color: #3cb371;
+  transition: background 0.2s ease-in-out, transform 0.3s ease;
 }
-
 .swap-button:hover {
   background: #333;
   transform: rotate(180deg);
 }
 
-/* === Inventory Modal === */
+/* === INVENTORY MODAL === */
 .inventory-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
   display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
 }
-
 .inventory-content {
-  display: flex;
-  background: #f0f0f0;
-  width: 750px;
-  height: 500px;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
+  background: #111;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(60, 179, 113, 0.5);
+  animation: fadeIn 0.3s ease-in-out;
 }
-
 .close-inventory {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 2rem;
-  color: #333;
+  float: right;
+  font-size: 24px;
   cursor: pointer;
+  color: #fff;
 }
-
-.inventory-left {
-  background: #dcdcdc;
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
+.close-inventory:hover {
+  color: #3cb371;
 }
-
-.inventory-left .category {
-  background: #28a745;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  cursor: pointer;
-}
-
-.inventory-left .category.active {
-  background: #218838;
-}
-
-.inventory-right {
-  flex: 1;
-  padding: 15px;
+.inventory-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 10px;
-  background: white;
-  overflow-y: auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 15px;
 }
-
 .inventory-item {
-  background: #eee;
+  background: #222;
+  border: 1px solid #444;
   border-radius: 6px;
   padding: 10px;
   text-align: center;
+  color: #bbb;
   cursor: pointer;
+  transition: background 0.2s ease-in-out, transform 0.2s;
 }
-
 .inventory-item:hover {
-  background: #ddd;
+  background: #333;
+  color: #3cb371;
+  transform: scale(1.05);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
