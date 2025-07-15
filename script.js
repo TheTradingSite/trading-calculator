@@ -139,9 +139,9 @@ function swapTrades() {
   document.getElementById("wantedPrice").innerText = yourPrice;
   document.getElementById("wantedValue").innerText = yourValue;
 
-  // Remove spin class after 0.5s so it can trigger again
+  // Remove spin class after 1s so it can trigger again
   setTimeout(() => {
     button.classList.remove("spin");
-  }, 500);
+  }, 1000);
 }
 
