@@ -35,7 +35,8 @@
       color: #3cb371;
     }
 
-    .nav-left .trade-calculator {
+    .nav-left .trade-calculator,
+    .nav-left a.active {
       color: #3cb371;
       font-weight: bold;
     }
@@ -241,7 +242,7 @@
   <nav class="navbar">
     <div class="nav-left">
       <a href="#">Trading</a>
-      <a href="#" class="trade-calculator">Trade Calculator</a>
+      <a href="#" class="trade-calculator active">Trade Calculator</a>
       <a href="#">Create Trade</a>
       <a href="https://docs.google.com/spreadsheets/d/1eQ39xV6l0uAogtIci9SJMm0Se-PktIEKtq6mhzVnStY/edit?gid=296028972#gid=296028972" target="_blank">Value List</a>
       <a href="https://discord.gg/tTYRm9GVRV" target="_blank">Discord</a>
@@ -252,13 +253,13 @@
   </nav>
 
   <!-- ✅ PAGE HEADER -->
-  <div class="page-header">
+  <header class="page-header">
     <h1>Trading Calculator</h1>
     <p>Add up to 4 items on either side of the trade. Click on an item to remove it.</p>
-  </div>
+  </header>
 
   <!-- ✅ TRADE CALCULATOR -->
-  <div class="trade-box">
+  <section class="trade-box">
     <!-- Your Items -->
     <div class="trade-column">
       <div class="your-items">Your Items</div>
@@ -272,7 +273,7 @@
     </div>
 
     <!-- Swap Button -->
-    <button class="swap-button">⇄</button>
+    <button class="swap-button" id="swapButton" title="Swap Items">⇄</button>
 
     <!-- Wanted Items -->
     <div class="trade-column">
@@ -285,12 +286,12 @@
       </div>
       <div class="summary">Price: <span id="wantedPrice">$0</span> | Value: <span id="wantedValue">$0</span></div>
     </div>
-  </div>
+  </section>
 
   <!-- ✅ INVENTORY MODAL -->
   <div class="inventory-modal" id="inventoryModal">
     <div class="inventory-content">
-      <span class="close-inventory" onclick="closeInventory()">&times;</span>
+      <span class="close-inventory" onclick="closeInventory()" title="Close">&times;</span>
       <div class="inventory-left">
         <div class="category active">All Items</div>
       </div>
