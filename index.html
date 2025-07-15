@@ -5,21 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Calculator</title>
   <link rel="stylesheet" href="style.css"> <!-- External CSS -->
+  <style>
+    /* ✅ NAVIGATION BAR COLORS */
+    .navbar {
+      background-color: #000;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 15px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+    .navbar a:hover {
+      background-color: #1a3d2e; /* Dark green hover */
+    }
+    .navbar a.active {
+      background-color: #3e8e61; /* Main green accent */
+      color: white;
+    }
+    .sign-in {
+      background-color: #3e8e61; /* Green button */
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .sign-in:hover {
+      background-color: #2f6e4a;
+    }
+
+    /* ✅ TRADE BOX GREEN THEME */
+    .your-items {
+      background-color: #2f6e4a !important; /* Green box header */
+      color: white;
+    }
+    .wanted-items {
+      background-color: #3e8e61 !important; /* Slightly brighter green */
+      color: white;
+    }
+    .item {
+      background-color: #1a1a1a;
+      border: 1px solid #2f6e4a;
+      color: #4caf50;
+    }
+    .swap-button {
+      background-color: #2f6e4a;
+      color: white;
+      border-radius: 50%;
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
   <!-- ✅ NAVIGATION BAR -->
   <nav class="navbar">
     <div class="nav-left">
-      <a href="index.html">Trading</a>
-      <a href="trade-calculator.html" class="active">Trade Calculator</a>
-      <a href="create-trade.html">Create Trade</a>
-      <a href="https://docs.google.com/spreadsheets/d/1eQ39xV6l0uAogtIci9SJMm0Se-PktIEKtq6mhzVnStY/edit?gid=296028972#gid=296028972" target="_blank">
-        Value List
-      </a>
-      <a href="https://discord.gg/tTYRm9GVRV" target="_blank">
-        Discord
-      </a>
+      <a href="#">Trading</a>
+      <a href="#" class="active">Trade Calculator</a>
+      <a href="#">Create Trade</a>
+      <a href="https://docs.google.com/spreadsheets/d/1eQ39xV6l0uAogtIci9SJMm0Se-PktIEKtq6mhzVnStY/edit?gid=296028972#gid=296028972" target="_blank">Value List</a>
+      <a href="https://discord.gg/tTYRm9GVRV" target="_blank">Discord</a>
     </div>
     <div class="nav-right">
       <button class="sign-in">Sign In</button>
@@ -38,29 +94,33 @@
       <!-- Your Items -->
       <div class="trade-column">
         <div class="title your-items">Your Items</div>
-        <div id="your-items" class="item-grid">
-          <!-- Items will be rendered dynamically by script.js -->
+        <div class="item-grid">
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
         </div>
-        <div class="summary">
-          Price: <span id="your-price">$0</span> | Value: <span id="your-value">$0</span>
-        </div>
+        <div class="summary">Price: $0 | Value: $0</div>
       </div>
 
       <!-- Swap Button -->
-      <div class="swap-button" onclick="swapItems()">⇄</div>
+      <div class="swap-button">⇄</div>
 
       <!-- Wanted Items -->
       <div class="trade-column">
         <div class="title wanted-items">Wanted Items</div>
-        <div id="wanted-items" class="item-grid">
-          <!-- Items will be rendered dynamically by script.js -->
+        <div class="item-grid">
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
+          <div class="item add-item">+ Add Item</div>
         </div>
-        <div class="summary">
-          Price: <span id="wanted-price">$0</span> | Value: <span id="wanted-value">$0</span>
-        </div>
+        <div class="summary">Price: $0 | Value: $0</div>
       </div>
     </div>
   </div>
+
+  <script src="script.js"></script>
 
   <!-- ✅ ITEM MODAL -->
   <div id="itemModal" class="modal">
@@ -71,9 +131,6 @@
       <div id="itemGrid" class="modal-grid"></div>
     </div>
   </div>
-
-  <!-- ✅ SCRIPT (should be at the bottom so it loads after the DOM) -->
-  <script src="script.js"></script>
 
 </body>
 </html>
