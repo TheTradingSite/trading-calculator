@@ -17,7 +17,7 @@
         <div class="summary">Price: $<span id="your-price">0</span> | Value: $<span id="your-value">0</span></div>
       </div>
 
-      <div class="swap-button">⇆</div>
+      <div class="swap-button" onclick="swapItems()">⇆</div>
 
       <div class="trade-column">
         <h3 class="title wanted-items">Wanted Items</h3>
@@ -28,14 +28,15 @@
   </div>
 
   <script src="script.js"></script>
-  <div id="itemModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="closeModal">&times;</span>
-    <h3>Select Item</h3>
-    <input type="text" id="searchBox" placeholder="Search items...">
-    <div id="itemGrid" class="item-grid"></div>
-  </div>
-</div>
 
+  <!-- ✅ Item Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h3>Select Item</h3>
+      <input type="text" id="searchBox" placeholder="Search items...">
+      <div id="itemGrid" class="modal-grid"></div>
+    </div>
+  </div>
 </body>
 </html>
