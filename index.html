@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Add up to 4 items on each side of the trade. Click on any item to remove it.</h2>
+
+    <div class="trade-box">
+      <div class="trade-column">
+        <h3 class="title your-items">Your Items</h3>
+        <div class="item-grid" id="your-items"></div>
+        <div class="summary">Price: $<span id="your-price">0</span> | Value: $<span id="your-value">0</span></div>
+      </div>
+
+      <div class="swap-button">⇆</div>
+
+      <div class="trade-column">
+        <h3 class="title wanted-items">Wanted Items</h3>
+        <div class="item-grid" id="wanted-items"></div>
+        <div class="summary">Price: $<span id="wanted-price">0</span> | Value: $<span id="wanted-value">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
