@@ -1,126 +1,70 @@
-// === GLOBALS ===
-const maxItems = 4;
-let yourItems = [];
-let wantedItems = [];
+// === GLOBAL VARIABLES ===
+let currentSlot = null;
 let currentType = "";
 
 // ✅ Example Inventory Data
 const inventoryData = [
-  { name: "Golden Crown", price: 500, value: 700, img: "golden-crown.png" },
-  { name: "Emerald Sword", price: 300, value: 400, img: "emerald-sword.png" },
-  { name: "Ruby Staff", price: 200, value: 250, img: "ruby-staff.png" },
-  { name: "Mystic Armor", price: 450, value: 600, img: "mystic-armor.png" },
-  { name: "Dragon Egg", price: 800, value: 1000, img: "dragon-egg.png" },
-  { name: "Silver Ring", price: 100, value: 150, img: "silver-ring.png" }
+  { name: "Golden Crown", price: 500, value: 700 },
+  { name: "Emerald Sword", price: 300, value: 400 },
+  { name: "Ruby Staff", price: 200, value: 250 },
+  { name: "Mystic Armor", price: 450, value: 600 },
+  { name: "Dragon Egg", price: 800, value: 1000 },
+  { name: "Silver Ring", price: 100, value: 150 }
 ];
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderItems();
-});
-
-// === RENDER ITEMS ===
-function renderItems() {
-  const yourItemsContainer = document.getElementById("your-items");
-  const wantedItemsContainer = document.getElementById("wanted-items");
-  yourItemsContainer.innerHTML = "";
-  wantedItemsContainer.innerHTML = "";
-
-  const renderSlot = (container, items, type, index) => {
-    const div = document.createElement("div");
-    div.className = "item";
-
-    if (items[index]) {
-      const item = items[index];
-      div.innerHTML = `
-        <img src="images/${item.img}" style="width:50px;height:50px;">
-        <p>${item.name}</p>
-        <small>$${item.price}</small>
-      `;
-      div.onclick = () => removeItem(type, index);
-    } else {
-      div.textContent = "+ Add Item";
-      div.onclick = () => addItem(type);
-    }
-
-    container.appendChild(div);
-  };
-
-  for (let i = 0; i < maxItems; i++) {
-    renderSlot(yourItemsContainer, yourItems, "your", i);
-    renderSlot(wantedItemsContainer, wantedItems, "wanted", i);
-  }
-
-  updateSummary();
-}
-
-// === ADD & REMOVE ITEMS ===
-function addItem(type) {
+// === OPEN INVENTORY ===
+function openInventory(slot, type) {
+  currentSlot = slot;
   currentType = type;
-  openInventorySelector();
+  document.getElementById("inventoryModal").style.display = "flex";
+  loadInventory();
 }
 
-function removeItem(type, index) {
-  if (type === "your") {
-    yourItems.splice(index, 1);
-  } else {
-    wantedItems.splice(index, 1);
-  }
-  renderItems();
-}
-
-// === INVENTORY MODAL ===
-function openInventorySelector() {
-  const grid = document.getElementById("inventoryGrid");
-  grid.innerHTML = "";
-
-  inventoryData.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "inventory-item";
-    div.innerHTML = `
-      <img src="images/${item.img}" style="width:40px;height:40px;display:block;margin:0 auto 5px;">
-      ${item.name}<br>
-      <small>$${item.price} | $${item.value}</small>
-    `;
-    div.onclick = () => selectItem(item);
-    grid.appendChild(div);
-  });
-
-  document.getElementById("inventoryModal").style.display = "block";
-}
-
+// === CLOSE INVENTORY ===
 function closeInventory() {
   document.getElementById("inventoryModal").style.display = "none";
 }
 
-// ✅ === FIXED SELECT ITEM (Toggle version) ===
+// === LOAD INVENTORY ===
+function loadInventory() {
+  const inventoryGrid = document.getElementById("inventoryGrid");
+  inventoryGrid.innerHTML = "";
+  inventoryData.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "inventory-item";
+    div.innerText = item.name;
+    div.onclick = () => selectItem(item);
+    inventoryGrid.appendChild(div);
+  });
+}
+
+// === SELECT ITEM ===
 function selectItem(item) {
-  let arr = currentType === "your" ? yourItems : wantedItems;
-  const index = arr.findIndex(i => i.name === item.name);
-
-  if (index !== -1) {
-    arr.splice(index, 1); // ✅ Remove if already selected
-  } else if (arr.length < maxItems) {
-    arr.push(item); // ✅ Add if space available
-  }
-
-  renderItems();
+  currentSlot.innerText = item.name;
+  currentSlot.dataset.price = item.price;
+  currentSlot.dataset.value = item.value;
+  currentSlot.style.color = "#3cb371";
   closeInventory();
+  updateTotals(currentType);
 }
 
-// === PRICE SUMMARY ===
-function updateSummary() {
-  const sum = arr => arr.reduce((total, item) => total + item.price, 0);
-  document.getElementById("your-price").textContent = `$${sum(yourItems)}`;
-  document.getElementById("wanted-price").textContent = `$${sum(wantedItems)}`;
+// === UPDATE TOTALS ===
+function updateTotals(type) {
+  let totalPrice = 0, totalValue = 0;
+  document.querySelectorAll(`#${type}Items .item-slot`).forEach(slot => {
+    totalPrice += parseInt(slot.dataset.price || 0, 10);
+    totalValue += parseInt(slot.dataset.value || 0, 10);
+  });
+  document.getElementById(`${type}Price`).innerText = `$${totalPrice}`;
+  document.getElementById(`${type}Value`).innerText = `$${totalValue}`;
 }
 
-// === SWAP BUTTON FUNCTIONALITY ===
-function swapTrades() {
-  const button = document.querySelector(".swap-button");
-  button.classList.add("spin");
+// === SWAP SIDES (OPTIONAL FEATURE) ===
+function swapSides() {
+  document.querySelector(".swap-button").classList.add("spin");
+  setTimeout(() => {
+    document.querySelector(".swap-button").classList.remove("spin");
+  }, 500);
 
-  [yourItems, wantedItems] = [wantedItems, yourItems];
-  renderItems();
-
-  setTimeout(() => button.classList.remove("spin"), 500);
+  // Swap values visually (optional: implement swapping logic)
 }
