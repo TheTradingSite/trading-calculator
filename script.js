@@ -57,7 +57,7 @@ function renderItems() {
 // ✅ Add & Remove Items
 function addItem(type) {
   currentType = type;
-  openItemSelector();
+  openInventorySelector();
 }
 
 function removeItem(type, index) {
@@ -87,21 +87,37 @@ function swapItems() {
   renderItems();
 }
 
-// ✅ Item Selector Modal
-const items = [
-  { name: "2X BOSS DROPS", img: "bossdrops.png", price: 100 },
-  { name: "2X MASTERY", img: "mastery.png", price: 200 },
-  { name: "BLADE", img: "blade.png", price: 300 },
-  { name: "BUDDHA", img: "buddha.png", price: 400 },
-];
+/* ------------------------------------------------
+    ✅ NEW INVENTORY SELECTOR (Brainrots Version)
+-------------------------------------------------- */
+
+// Example inventory items (ALL called Brainrots for now)
+const inventoryItems = Array.from({ length: 20 }, (_, i) => ({
+  name: "Brainrots",
+  img: "brainrots.png", // put your own image here
+  price: 100
+}));
 
 const modal = document.getElementById("itemModal");
+const categoryPanel = document.getElementById("categoryPanel");
 const itemGrid = document.getElementById("itemGrid");
 const searchBox = document.getElementById("searchBox");
 
-function openItemSelector() {
+function openInventorySelector() {
   modal.style.display = "flex";
-  displayItems(items);
+  displayCategories();
+  displayItems(inventoryItems);
+}
+
+function displayCategories() {
+  categoryPanel.innerHTML = "";
+
+  const button = document.createElement("button");
+  button.className = "category-button";
+  button.textContent = "Brainrots";
+  button.onclick = () => displayItems(inventoryItems);
+
+  categoryPanel.appendChild(button);
 }
 
 function displayItems(itemList) {
@@ -130,7 +146,7 @@ function selectItem(item) {
 }
 
 searchBox.addEventListener("input", () => {
-  const filtered = items.filter(i =>
+  const filtered = inventoryItems.filter(i =>
     i.name.toLowerCase().includes(searchBox.value.toLowerCase())
   );
   displayItems(filtered);
