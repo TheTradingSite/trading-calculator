@@ -3,7 +3,7 @@ let yourItems = [];
 let wantedItems = [];
 let currentType = "";
 
-// ✅ Render Items
+// ✅ Render Items (Grid-Based)
 function renderItems() {
   const yourItemsContainer = document.getElementById("your-items");
   const wantedItemsContainer = document.getElementById("wanted-items");
@@ -11,32 +11,44 @@ function renderItems() {
   yourItemsContainer.innerHTML = "";
   wantedItemsContainer.innerHTML = "";
 
+  // Render Your Items
   for (let i = 0; i < maxItems; i++) {
-    const item = document.createElement("div");
-    item.className = "item";
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "item";
+
     if (yourItems[i]) {
-      item.textContent = `${yourItems[i].name} ($${yourItems[i].price})`;
-      item.onclick = () => removeItem("your", i);
+      itemDiv.innerHTML = `
+        <img src="images/${yourItems[i].img}" alt="${yourItems[i].name}">
+        <p>${yourItems[i].name}</p>
+        <small>$${yourItems[i].price}</small>
+      `;
+      itemDiv.onclick = () => removeItem("your", i);
     } else {
-      item.classList.add("add-item");
-      item.textContent = "+ Add Item";
-      item.onclick = () => addItem("your");
+      itemDiv.classList.add("add-item");
+      itemDiv.textContent = "+ Add Item";
+      itemDiv.onclick = () => addItem("your");
     }
-    yourItemsContainer.appendChild(item);
+    yourItemsContainer.appendChild(itemDiv);
   }
 
+  // Render Wanted Items
   for (let i = 0; i < maxItems; i++) {
-    const item = document.createElement("div");
-    item.className = "item";
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "item";
+
     if (wantedItems[i]) {
-      item.textContent = `${wantedItems[i].name} ($${wantedItems[i].price})`;
-      item.onclick = () => removeItem("wanted", i);
+      itemDiv.innerHTML = `
+        <img src="images/${wantedItems[i].img}" alt="${wantedItems[i].name}">
+        <p>${wantedItems[i].name}</p>
+        <small>$${wantedItems[i].price}</small>
+      `;
+      itemDiv.onclick = () => removeItem("wanted", i);
     } else {
-      item.classList.add("add-item");
-      item.textContent = "+ Add Item";
-      item.onclick = () => addItem("wanted");
+      itemDiv.classList.add("add-item");
+      itemDiv.textContent = "+ Add Item";
+      itemDiv.onclick = () => addItem("wanted");
     }
-    wantedItemsContainer.appendChild(item);
+    wantedItemsContainer.appendChild(itemDiv);
   }
 
   updateSummary();
@@ -62,10 +74,11 @@ function updateSummary() {
   const yourPrice = yourItems.reduce((sum, i) => sum + i.price, 0);
   const wantedPrice = wantedItems.reduce((sum, i) => sum + i.price, 0);
 
-  document.getElementById("your-price").textContent = yourPrice;
-  document.getElementById("wanted-price").textContent = wantedPrice;
-  document.getElementById("your-value").textContent = yourPrice;
-  document.getElementById("wanted-value").textContent = wantedPrice;
+  document.getElementById("your-price").textContent = `$${yourPrice}`;
+  document.getElementById("your-value").textContent = `$${yourPrice}`;
+
+  document.getElementById("wanted-price").textContent = `$${wantedPrice}`;
+  document.getElementById("wanted-value").textContent = `$${wantedPrice}`;
 }
 
 // ✅ Swap Button
@@ -95,7 +108,12 @@ function displayItems(itemList) {
   itemGrid.innerHTML = "";
   itemList.forEach(item => {
     const div = document.createElement("div");
-    div.innerHTML = `<img src="images/${item.img}" alt=""><br>${item.name}`;
+    div.className = "modal-item";
+    div.innerHTML = `
+      <img src="images/${item.img}" alt="${item.name}">
+      <p>${item.name}</p>
+      <small>$${item.price}</small>
+    `;
     div.onclick = () => selectItem(item);
     itemGrid.appendChild(div);
   });
