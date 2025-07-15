@@ -117,31 +117,18 @@ function updateSummary() {
 // === SWAP BUTTON FUNCTIONALITY ===
 function swapTrades() {
   const button = document.querySelector(".swap-button");
-  const yourItemsGrid = document.getElementById("yourItems");
-  const wantedItemsGrid = document.getElementById("wantedItems");
 
-  // Spin animation
+  // Spin animation (1s)
   button.classList.add("spin");
 
-  // === Swap the contents of the two trade columns ===
-  const tempHTML = yourItemsGrid.innerHTML;
-  yourItemsGrid.innerHTML = wantedItemsGrid.innerHTML;
-  wantedItemsGrid.innerHTML = tempHTML;
+  // ✅ Swap the arrays instead of raw HTML
+  [yourItems, wantedItems] = [wantedItems, yourItems];
 
-  // === Swap totals ===
-  const yourPrice = document.getElementById("yourPrice").innerText;
-  const yourValue = document.getElementById("yourValue").innerText;
-  const wantedPrice = document.getElementById("wantedPrice").innerText;
-  const wantedValue = document.getElementById("wantedValue").innerText;
+  // ✅ Re-render UI (updates items and prices automatically)
+  renderItems();
 
-  document.getElementById("yourPrice").innerText = wantedPrice;
-  document.getElementById("yourValue").innerText = wantedValue;
-  document.getElementById("wantedPrice").innerText = yourPrice;
-  document.getElementById("wantedValue").innerText = yourValue;
-
-  // Remove spin class after 1s so it can trigger again
+  // ✅ Remove spin class after 0.5s (match CSS animation)
   setTimeout(() => {
     button.classList.remove("spin");
   }, 1000);
 }
-
