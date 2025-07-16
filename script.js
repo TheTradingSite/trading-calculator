@@ -3,9 +3,8 @@ const maxItems = 4;
 let yourItems = [];
 let wantedItems = [];
 let currentType = "";
-let selectedItem = null; // ✅ NEW for variation selection
+let selectedItem = null;
 
-// ✅ Example Inventory Data
 const inventoryData = [
   { name: "Golden Crown", price: 500, value: 700, img: "golden-crown.png" },
   { name: "Emerald Sword", price: 300, value: 400, img: "emerald-sword.png" },
@@ -17,12 +16,23 @@ const inventoryData = [
 
 document.addEventListener("DOMContentLoaded", () => {
   renderItems();
+
+  // Bind variation buttons safely
+  const variationBtns = document.querySelectorAll(".variation-btn");
+  variationBtns.forEach(btn => {
+    btn.addEventListener("click", () => handleVariationClick(btn));
+  });
+
+  const swapBtn = document.querySelector(".swap-button");
+  if (swapBtn) swapBtn.addEventListener("click", swapTrades);
 });
 
 // === RENDER ITEMS ===
 function renderItems() {
   const yourItemsContainer = document.getElementById("your-items");
   const wantedItemsContainer = document.getElementById("wanted-items");
+  if (!yourItemsContainer || !wantedItemsContainer) return;
+
   yourItemsContainer.innerHTML = "";
   wantedItemsContainer.innerHTML = "";
 
@@ -43,7 +53,6 @@ function renderItems() {
       div.textContent = "+ Add Item";
       div.onclick = () => addItem(type);
     }
-
     container.appendChild(div);
   };
 
@@ -60,19 +69,15 @@ function addItem(type) {
   currentType = type;
   openInventorySelector();
 }
-
 function removeItem(type, index) {
-  if (type === "your") {
-    yourItems.splice(index, 1);
-  } else {
-    wantedItems.splice(index, 1);
-  }
+  (type === "your" ? yourItems : wantedItems).splice(index, 1);
   renderItems();
 }
 
 // === INVENTORY MODAL ===
 function openInventorySelector() {
   const grid = document.getElementById("inventoryGrid");
+  if (!grid) return;
   grid.innerHTML = "";
 
   inventoryData.forEach(item => {
@@ -80,8 +85,7 @@ function openInventorySelector() {
     div.className = "inventory-item";
     div.innerHTML = `
       <img src="images/${item.img}" style="width:40px;height:40px;display:block;margin:0 auto 5px;">
-      ${item.name}<br>
-      <small>$${item.price} | $${item.value}</small>
+      ${item.name}<br><small>$${item.price} | $${item.value}</small>
     `;
     div.onclick = () => selectItem(item);
     grid.appendChild(div);
@@ -89,62 +93,58 @@ function openInventorySelector() {
 
   document.getElementById("inventoryModal").style.display = "block";
 }
-
 function closeInventory() {
   document.getElementById("inventoryModal").style.display = "none";
 }
 
-// ✅ === UPDATED SELECT ITEM (Now opens variation modal) ===
+// === SELECT ITEM ===
 function selectItem(item) {
-  selectedItem = item; // store selected item
+  selectedItem = item;
   closeInventory();
-  openVariation(); // ✅ Ask for variation before adding
+  openVariation();
 }
 
 // === VARIATION MODAL ===
 function openVariation() {
   document.getElementById("variationModal").style.display = "flex";
 }
-
 function closeVariation() {
   document.getElementById("variationModal").style.display = "none";
 }
+function handleVariationClick(btn) {
+  let variation = btn.dataset.type;
+  let newItem = { ...selectedItem };
 
-// ✅ === VARIATION BUTTON HANDLER ===
-document.querySelectorAll(".variation-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    let variation = btn.dataset.type;
-    let newItem = { ...selectedItem }; // copy selected item
+  switch (variation) {
+    case "gold": newItem.price *= 1.5; newItem.value *= 1.5; break;
+    case "diamond": newItem.price *= 2; newItem.value *= 2; break;
+    case "rainbow": newItem.price *= 2.5; newItem.value *= 2.5; break;
+    case "candy": newItem.price *= 3; newItem.value *= 3; break;
+  }
+  newItem.price = Math.round(newItem.price);
+  newItem.value = Math.round(newItem.value);
+  newItem.variation = variation !== "default" ? variation : "";
 
-    // ✅ Adjust price & value based on variation
-    switch (variation) {
-      case "gold": newItem.price = Math.round(newItem.price * 1.5); newItem.value = Math.round(newItem.value * 1.5); break;
-      case "diamond": newItem.price = Math.round(newItem.price * 2); newItem.value = Math.round(newItem.value * 2); break;
-      case "rainbow": newItem.price = Math.round(newItem.price * 2.5); newItem.value = Math.round(newItem.value * 2.5); break;
-      case "candy": newItem.price = Math.round(newItem.price * 3); newItem.value = Math.round(newItem.value * 3); break;
-      default: break;
-    }
+  let arr = currentType === "your" ? yourItems : wantedItems;
+  if (arr.length < maxItems) arr.push(newItem);
 
-    newItem.variation = variation !== "default" ? variation : "";
-
-    let arr = currentType === "your" ? yourItems : wantedItems;
-    if (arr.length < maxItems) arr.push(newItem);
-
-    renderItems();
-    closeVariation();
-  });
-});
+  renderItems();
+  closeVariation();
+}
 
 // === PRICE SUMMARY ===
 function updateSummary() {
   const sum = arr => arr.reduce((total, item) => total + item.price, 0);
-  document.getElementById("your-price").textContent = `$${sum(yourItems)}`;
-  document.getElementById("wanted-price").textContent = `$${sum(wantedItems)}`;
+  const yp = document.getElementById("your-price");
+  const wp = document.getElementById("wanted-price");
+  if (yp) yp.textContent = `$${sum(yourItems)}`;
+  if (wp) wp.textContent = `$${sum(wantedItems)}`;
 }
 
 // === SWAP BUTTON FUNCTIONALITY ===
 function swapTrades() {
   const button = document.querySelector(".swap-button");
+  if (!button) return;
   button.classList.add("spin");
   [yourItems, wantedItems] = [wantedItems, yourItems];
   renderItems();
