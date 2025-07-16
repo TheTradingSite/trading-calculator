@@ -116,6 +116,9 @@
       justify-content: center;
       color: #bbb;
       cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+      padding: 4px;
       transition: background 0.2s ease-in-out, transform 0.1s ease-in-out;
     }
 
@@ -152,8 +155,8 @@
       transform: rotate(180deg);
     }
 
-    /* ✅ INVENTORY MODAL */
-    .inventory-modal {
+    /* ✅ MODALS (Inventory & Variations) */
+    .modal {
       display: none;
       position: fixed;
       top: 0;
@@ -166,25 +169,30 @@
       z-index: 1000;
     }
 
-    .inventory-content {
+    .modal-content {
       background: #111;
       padding: 20px;
       border-radius: 8px;
-      width: 600px;
-      max-height: 80%;
-      overflow-y: auto;
       box-shadow: 0 0 15px rgba(60,179,113,0.4);
-      display: flex;
       position: relative;
+      animation: fadeIn 0.3s ease-in-out;
     }
 
-    .close-inventory {
+    .close-btn {
       position: absolute;
       top: 10px;
       right: 10px;
       color: #fff;
       font-size: 24px;
       cursor: pointer;
+    }
+
+    /* Inventory-specific */
+    #inventoryModal .modal-content {
+      width: 600px;
+      max-height: 80%;
+      overflow-y: auto;
+      display: flex;
     }
 
     .inventory-left {
@@ -227,9 +235,34 @@
       color: #bbb;
       cursor: pointer;
       transition: background 0.2s ease-in-out;
+      text-align: center;
+      padding: 4px;
+      font-size: 12px;
     }
 
     .inventory-item:hover {
+      background: #3cb371;
+      color: #fff;
+    }
+
+    /* Variation-specific */
+    #variationModal .modal-content {
+      width: 300px;
+      text-align: center;
+    }
+
+    .variation-btn {
+      background: #222;
+      border: 1px solid #444;
+      color: #ccc;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+      margin: 5px;
+    }
+
+    .variation-btn:hover {
       background: #3cb371;
       color: #fff;
     }
@@ -293,9 +326,9 @@
   </section>
 
   <!-- ✅ INVENTORY MODAL -->
-  <div class="inventory-modal" id="inventoryModal">
-    <div class="inventory-content">
-      <span class="close-inventory" onclick="closeInventory()" title="Close">&times;</span>
+  <div class="modal" id="inventoryModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeInventory()" title="Close">&times;</span>
       <div class="inventory-left">
         <div class="category active">All Items</div>
       </div>
@@ -303,113 +336,132 @@
     </div>
   </div>
 
-  <script>
-    let currentSlot = null, currentType = '';
-
-    function handleSlotClick(slot, type) {
-      if (slot.classList.contains("filled")) {
-        // ✅ Remove item
-        slot.textContent = "+ Add Item";
-        slot.classList.remove("filled");
-        delete slot.dataset.price;
-        delete slot.dataset.value;
-        updateTotals(type);
-      } else {
-        openInventory(slot, type);
-      }
-    }
-
-    function openInventory(slot, type) {
-      currentSlot = slot;
-      currentType = type;
-      document.getElementById("inventoryModal").style.display = "flex";
-      loadInventory();
-    }
-
-    function closeInventory() {
-      document.getElementById("inventoryModal").style.display = "none";
-    }
-
-    function loadInventory() {
-      const inventoryGrid = document.getElementById("inventoryGrid");
-      inventoryGrid.innerHTML = "";
-      let sampleItems = [
-        {name: "Graipuss Medussi", price: 100, value: 120},
-        {name: "La Vacca Saturno Sarturnita", price: 30, value: 50},
-        {name: "Los Tralaleritos", price: 100, value: 120},
-        {name: "Sammyni Spyderini", price: 80, value: 100},
-        {name: "Garama and Madundung", price: 30, value: 50},
-        {name: "La Grande Combinazione", price: 60, value: 70}
-      ];
-      sampleItems.forEach(item => {
-        let div = document.createElement("div");
-        div.className = "inventory-item";
-        div.innerText = item.name;
-        div.onclick = () => selectItem(item);
-        inventoryGrid.appendChild(div);
-      });
-    }
-
-    function selectItem(item) {
-      currentSlot.textContent = item.name;
-      currentSlot.dataset.price = item.price;
-      currentSlot.dataset.value = item.value;
-      currentSlot.classList.add("filled");
-      closeInventory();
-      updateTotals(currentType);
-    }
-
-    function updateTotals(type) {
-      let totalPrice = 0, totalValue = 0;
-      document.querySelectorAll(`#${type}Items .item-slot`).forEach(slot => {
-        totalPrice += parseInt(slot.dataset.price || 0, 10);
-        totalValue += parseInt(slot.dataset.value || 0, 10);
-      });
-      document.getElementById(`${type}Price`).innerText = `$${totalPrice}`;
-      document.getElementById(`${type}Value`).innerText = `$${totalValue}`;
-    }
-
-    // ✅ Swap items between columns
-    document.getElementById("swapButton").addEventListener("click", () => {
-      const yourSlots = document.querySelectorAll("#yourItems .item-slot");
-      const wantedSlots = document.querySelectorAll("#wantedItems .item-slot");
-
-      for (let i = 0; i < yourSlots.length; i++) {
-        const tempText = yourSlots[i].textContent;
-        const tempPrice = yourSlots[i].dataset.price || "";
-        const tempValue = yourSlots[i].dataset.value || "";
-        const tempFilled = yourSlots[i].classList.contains("filled");
-
-        yourSlots[i].textContent = wantedSlots[i].textContent;
-        yourSlots[i].dataset.price = wantedSlots[i].dataset.price || "";
-        yourSlots[i].dataset.value = wantedSlots[i].dataset.value || "";
-        yourSlots[i].classList.toggle("filled", wantedSlots[i].classList.contains("filled"));
-
-        wantedSlots[i].textContent = tempText;
-        wantedSlots[i].dataset.price = tempPrice;
-        wantedSlots[i].dataset.value = tempValue;
-        wantedSlots[i].classList.toggle("filled", tempFilled);
-      }
-
-      updateTotals("your");
-      updateTotals("wanted");
-    });
-  </script>
-  
   <!-- ✅ VARIATION MODAL -->
-<div class="inventory-modal" id="variationModal">
-  <div class="inventory-content" style="flex-direction: column; align-items: center; width: 300px;">
-    <span class="close-inventory" onclick="closeVariation()" title="Close">&times;</span>
-    <h3>Select Variation</h3>
-    <div id="variationOptions" style="display: flex; gap: 10px; margin-top: 10px;">
-      <button class="variation-btn" data-type="default">Default</button>
-      <button class="variation-btn" data-type="gold">Gold</button>
-      <button class="variation-btn" data-type="diamond">Diamond</button>
-      <button class="variation-btn" data-type="rainbow">Rainbow</button>
-      <button class="variation-btn" data-type="candy">Candy</button>
+  <div class="modal" id="variationModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeVariation()" title="Close">&times;</span>
+      <h3>Select Variation</h3>
+      <button class="variation-btn" data-type="Default">Default</button>
+      <button class="variation-btn" data-type="Gold">Gold</button>
+      <button class="variation-btn" data-type="Diamond">Diamond</button>
+      <button class="variation-btn" data-type="Rainbow">Rainbow</button>
+      <button class="variation-btn" data-type="Candy">Candy</button>
     </div>
   </div>
-</div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let currentSlot = null, currentType = '';
+
+      function handleSlotClick(slot, type) {
+        if (slot.classList.contains("filled")) {
+          slot.textContent = "+ Add Item";
+          slot.classList.remove("filled");
+          ["price", "value", "variation"].forEach(attr => delete slot.dataset[attr]);
+          updateTotals(type);
+        } else {
+          currentSlot = slot;
+          currentType = type;
+          document.getElementById("inventoryModal").style.display = "flex";
+          loadInventory();
+        }
+      }
+      window.handleSlotClick = handleSlotClick;
+
+      function closeInventory() {
+        document.getElementById("inventoryModal").style.display = "none";
+      }
+      window.closeInventory = closeInventory;
+
+      function closeVariation() {
+        document.getElementById("variationModal").style.display = "none";
+      }
+      window.closeVariation = closeVariation;
+
+      function loadInventory() {
+        const inventoryGrid = document.getElementById("inventoryGrid");
+        inventoryGrid.innerHTML = "";
+        let sampleItems = [
+          {name: "Graipuss Medussi", price: 100, value: 120},
+          {name: "La Vacca Saturno Sarturnita", price: 30, value: 50},
+          {name: "Los Tralaleritos", price: 100, value: 120},
+          {name: "Sammyni Spyderini", price: 80, value: 100},
+          {name: "Garama and Madundung", price: 30, value: 50},
+          {name: "La Grande Combinazione", price: 60, value: 70}
+        ];
+        sampleItems.forEach(item => {
+          let div = document.createElement("div");
+          div.className = "inventory-item";
+          div.innerText = item.name;
+          div.onclick = () => {
+            selectItem(item);
+          };
+          inventoryGrid.appendChild(div);
+        });
+      }
+
+      function selectItem(item) {
+        currentSlot.textContent = item.name;
+        currentSlot.dataset.price = item.price;
+        currentSlot.dataset.value = item.value;
+        currentSlot.classList.add("filled");
+        closeInventory();
+        document.getElementById("variationModal").style.display = "flex";
+      }
+
+      document.querySelectorAll(".variation-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          let variation = btn.dataset.type;
+          if (currentSlot) {
+            currentSlot.textContent = `${currentSlot.textContent.split(" (")[0]} (${variation})`;
+            currentSlot.dataset.variation = variation;
+          }
+          closeVariation();
+          updateTotals(currentType);
+        });
+      });
+
+      function updateTotals(type) {
+        let totalPrice = 0, totalValue = 0;
+        document.querySelectorAll(`#${type}Items .item-slot`).forEach(slot => {
+          totalPrice += parseInt(slot.dataset.price || 0, 10);
+          totalValue += parseInt(slot.dataset.value || 0, 10);
+        });
+        document.getElementById(`${type}Price`).innerText = `$${totalPrice}`;
+        document.getElementById(`${type}Value`).innerText = `$${totalValue}`;
+      }
+
+      document.getElementById("swapButton").addEventListener("click", () => {
+        const yourSlots = document.querySelectorAll("#yourItems .item-slot");
+        const wantedSlots = document.querySelectorAll("#wantedItems .item-slot");
+
+        for (let i = 0; i < yourSlots.length; i++) {
+          const y = yourSlots[i], w = wantedSlots[i];
+          const temp = {
+            text: y.textContent,
+            price: y.dataset.price,
+            value: y.dataset.value,
+            variation: y.dataset.variation,
+            filled: y.classList.contains("filled")
+          };
+
+          ["price", "value", "variation"].forEach(attr => {
+            y.dataset[attr] = w.dataset[attr] || "";
+            w.dataset[attr] = temp[attr] || "";
+            if (!y.dataset[attr]) delete y.dataset[attr];
+            if (!w.dataset[attr]) delete w.dataset[attr];
+          });
+
+          y.textContent = w.textContent;
+          y.classList.toggle("filled", w.classList.contains("filled"));
+          w.textContent = temp.text;
+          w.classList.toggle("filled", temp.filled);
+        }
+
+        updateTotals("your");
+        updateTotals("wanted");
+      });
+    });
+  </script>
 </body>
 </html>
