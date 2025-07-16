@@ -203,3 +203,43 @@ body {
     transform: scale(1);
   }
 }
+
+/* ✅ === NEW VARIATION STYLES === */
+.variation-tag {
+  display: inline-block;
+  padding: 2px 5px;
+  font-size: 10px;
+  border-radius: 4px;
+  color: white;
+  margin-top: 3px;
+}
+
+.variation-tag.gold {
+  background: gold;
+  color: black;
+}
+.variation-tag.diamond {
+  background: deepskyblue;
+}
+.variation-tag.rainbow {
+  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+}
+.variation-tag.candy {
+  background: pink;
+  color: red;
+}
+
+.variation-btn {
+  background: #222;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+.variation-btn:hover {
+  background: #3cb371;
+  color: #fff;
+  transform: scale(1.05);
+}
