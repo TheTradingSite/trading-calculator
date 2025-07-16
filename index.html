@@ -395,5 +395,21 @@
       updateTotals("wanted");
     });
   </script>
+  
+  <!-- ✅ VARIATION MODAL -->
+<div class="inventory-modal" id="variationModal">
+  <div class="inventory-content" style="flex-direction: column; align-items: center; width: 300px;">
+    <span class="close-inventory" onclick="closeVariation()" title="Close">&times;</span>
+    <h3>Select Variation</h3>
+    <div id="variationOptions" style="display: flex; gap: 10px; margin-top: 10px;">
+      <button class="variation-btn" data-type="default">Default</button>
+      <button class="variation-btn" data-type="gold">Gold</button>
+      <button class="variation-btn" data-type="diamond">Diamond</button>
+      <button class="variation-btn" data-type="rainbow">Rainbow</button>
+      <button class="variation-btn" data-type="candy">Candy</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
