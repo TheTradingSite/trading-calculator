@@ -6,20 +6,21 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  line-height: 1.4;
 }
 
 /* === PAGE HEADER === */
 .page-header {
-  text-align: center;
-  margin-top: 20px;
+  margin: 20px auto 10px;
 }
 .page-header h1 {
   font-size: 2em;
   color: #3cb371;
+  margin-bottom: 5px;
 }
 .page-header p {
-  color: #ccc;
-  margin-bottom: 20px;
+  color: #bbb;
+  margin: 0 0 20px;
 }
 
 /* === NAVIGATION BAR === */
@@ -38,7 +39,8 @@ body {
   color: #ccc;
   text-decoration: none;
   margin-right: 15px;
-  transition: color 0.3s, border-bottom 0.3s, background 0.3s;
+  padding-bottom: 3px;
+  transition: color 0.3s, border-bottom 0.3s;
 }
 .nav-left a:hover,
 .nav-left a.active {
@@ -47,11 +49,13 @@ body {
 }
 .nav-left a.trade-calculator {
   background: #3cb371;
-  color: #ccc; /* matches other nav links */
+  color: #111;
   padding: 4px 10px;
   border-radius: 4px;
+  font-weight: bold;
 }
 
+/* === SIGN IN BUTTON === */
 .sign-in {
   background: #3cb371;
   border: none;
@@ -59,7 +63,7 @@ body {
   border-radius: 4px;
   color: #fff;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease;
 }
 .sign-in:hover {
   background: #2e9e5f;
@@ -69,20 +73,22 @@ body {
 .trade-box {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 30px;
   gap: 30px;
+  flex-wrap: wrap;
 }
 .trade-column {
   background: #111;
   padding: 15px;
   border-radius: 8px;
   width: 260px;
-  box-shadow: 0 0 10px rgba(60, 179, 113, 0.4);
-  transition: transform 0.3s ease;
+  box-shadow: 0 0 10px rgba(60, 179, 113, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .trade-column:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 0 15px rgba(60, 179, 113, 0.5);
 }
 .your-items,
 .wanted-items {
@@ -122,7 +128,7 @@ body {
   color: #aaa;
 }
 
-/* === SWAP BUTTON (IMPROVED) === */
+/* === SWAP BUTTON === */
 .swap-button {
   font-size: 28px;
   background: #222;
@@ -204,7 +210,7 @@ body {
   }
 }
 
-/* ✅ === NEW VARIATION STYLES === */
+/* === VARIATION TAGS === */
 .variation-tag {
   display: inline-block;
   padding: 2px 5px;
@@ -213,7 +219,6 @@ body {
   color: white;
   margin-top: 3px;
 }
-
 .variation-tag.gold {
   background: gold;
   color: black;
@@ -228,7 +233,6 @@ body {
   background: pink;
   color: red;
 }
-
 .variation-btn {
   background: #222;
   border: 1px solid #444;
