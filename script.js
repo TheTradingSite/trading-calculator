@@ -3,6 +3,7 @@ const maxItems = 4;
 let yourItems = [];
 let wantedItems = [];
 let currentType = "";
+let selectedItem = null; // ✅ NEW for variation selection
 
 // ✅ Example Inventory Data
 const inventoryData = [
@@ -35,6 +36,7 @@ function renderItems() {
         <img src="images/${item.img}" style="width:50px;height:50px;">
         <p>${item.name}</p>
         <small>$${item.price}</small>
+        ${item.variation ? `<span class="variation-tag ${item.variation}">${item.variation}</span>` : ""}
       `;
       div.onclick = () => removeItem(type, index);
     } else {
@@ -92,20 +94,46 @@ function closeInventory() {
   document.getElementById("inventoryModal").style.display = "none";
 }
 
-// ✅ === FIXED SELECT ITEM (Toggle version) ===
+// ✅ === UPDATED SELECT ITEM (Now opens variation modal) ===
 function selectItem(item) {
-  let arr = currentType === "your" ? yourItems : wantedItems;
-  const index = arr.findIndex(i => i.name === item.name);
-
-  if (index !== -1) {
-    arr.splice(index, 1); // ✅ Remove if already selected
-  } else if (arr.length < maxItems) {
-    arr.push(item); // ✅ Add if space available
-  }
-
-  renderItems();
+  selectedItem = item; // store selected item
   closeInventory();
+  openVariation(); // ✅ Ask for variation before adding
 }
+
+// === VARIATION MODAL ===
+function openVariation() {
+  document.getElementById("variationModal").style.display = "flex";
+}
+
+function closeVariation() {
+  document.getElementById("variationModal").style.display = "none";
+}
+
+// ✅ === VARIATION BUTTON HANDLER ===
+document.querySelectorAll(".variation-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    let variation = btn.dataset.type;
+    let newItem = { ...selectedItem }; // copy selected item
+
+    // ✅ Adjust price & value based on variation
+    switch (variation) {
+      case "gold": newItem.price = Math.round(newItem.price * 1.5); newItem.value = Math.round(newItem.value * 1.5); break;
+      case "diamond": newItem.price = Math.round(newItem.price * 2); newItem.value = Math.round(newItem.value * 2); break;
+      case "rainbow": newItem.price = Math.round(newItem.price * 2.5); newItem.value = Math.round(newItem.value * 2.5); break;
+      case "candy": newItem.price = Math.round(newItem.price * 3); newItem.value = Math.round(newItem.value * 3); break;
+      default: break;
+    }
+
+    newItem.variation = variation !== "default" ? variation : "";
+
+    let arr = currentType === "your" ? yourItems : wantedItems;
+    if (arr.length < maxItems) arr.push(newItem);
+
+    renderItems();
+    closeVariation();
+  });
+});
 
 // === PRICE SUMMARY ===
 function updateSummary() {
@@ -117,18 +145,8 @@ function updateSummary() {
 // === SWAP BUTTON FUNCTIONALITY ===
 function swapTrades() {
   const button = document.querySelector(".swap-button");
-
-  // Spin animation (1s)
   button.classList.add("spin");
-
-  // ✅ Swap the arrays instead of raw HTML
   [yourItems, wantedItems] = [wantedItems, yourItems];
-
-  // ✅ Re-render UI (updates items and prices automatically)
   renderItems();
-
-  // ✅ Remove spin class after 0.5s (match CSS animation)
-  setTimeout(() => {
-    button.classList.remove("spin");
-  }, 1000);
+  setTimeout(() => button.classList.remove("spin"), 1000);
 }
